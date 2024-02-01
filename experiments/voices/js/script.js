@@ -1,9 +1,6 @@
 /**
-Title of Project
-Author Name
-
-This is a template. You must fill in the title,
-author, and this description to match your project!
+Voices Experiments 
+Heather Chester 
 */
 
 "use strict";
@@ -38,9 +35,9 @@ function handleResult() {
     }
 }
 
-// function mousePressed() {
-//     voice.speak(`yes`);
-// }
+function mousePressed() {
+    voice.speak(`yes`);
+}
 
 function draw() {
     background(255); 
