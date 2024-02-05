@@ -21,18 +21,41 @@ let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer
 let currentChatSpeech = ``; // Current speech for the bot 
 let currentSpeech = ``; // What is currently being said 
 
-const toSay = [ `What kind of relationship are you looking for?`, 
-    `You said: Taxing`, 
-    `What are some of your hobbies?`,
-    `You said: Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`,
-    `What traits do you seek for in your ideal partner?`,
-    `You said: Deep pockets with a passion for aggravating the masses`, 
-    `Age is just a number... but what number are you looking for?`,
-    `You said: 66...6`,
-    `Describe your dream appearance for your potential partner`,
-    `You said: Privileged cis-het white man who should retire`,
-    `Looks like we have found your ideal match! Please click the button below to reveal`
-]
+let data = [ {
+    category: `Relationship`,
+    question: `What kind of relationship are you looking for?`,
+    answer: ` `, 
+    heard: `You said: Taxing`
+}, 
+{
+    category: `Hobbies`,
+    question: `What are some of your hobbies?`,
+    answer: ` `, 
+    heard: `You said: Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
+}, 
+{
+    category: `Traits`,
+    question: `What traits do you seek for in your ideal partner?`,
+    answer: ` `, 
+    heard: `You said: Deep pockets with a passion for aggravating the masses`
+}, 
+{
+    category: `Age`,
+    question: `Age is just a number... but what number are you looking for?`,
+    answer: ` `, 
+    heard: `You said: 66...6`
+}, 
+{
+    category: `Looks`, 
+    question: `Describe your dream appearance for your potential partner`,
+    answer: ` `, 
+    heard: `You said: Privileged cis-het white man who should retire`,
+}
+];
+
+let currentQuestion = 0; 
+//     `Looks like we have found your ideal match! Please click the button below to reveal`
+
 
 let showSubtitle = false; 
 // let state = `title`; 
@@ -82,12 +105,7 @@ function draw() {
 }
 
 function mousePressed() {
-    let currentChatSpeech = toSay; 
-
-    for (let i = 0; i < toSay.length; i++) {
-        // let toSay = toSay[i]; 
-        voice.speak(toSay[i]); // Script for customer service rep 
-    }
+    // let currentChatSpeech
 }
 
 function speechStarted() {
@@ -100,7 +118,7 @@ function speechEnded() {
 
 function handleResult() {
     currentSpeech = speechRecognizer.resultString; 
-    // if (speechRecognizer.resultString.toLowerCase() === `turn the lights on`) {
+    // if (speechRecognizer.resultString.toLowerCase() === ` `) {
 
     // }
 }
