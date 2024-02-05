@@ -150,22 +150,36 @@ const animals = [
 ]; 
   
 let currentAnimal = ``;
+let currentAnswer = ``; 
 
 const voice = new p5.Speech(); // For speech output 
-// let speechRecognizer = new p5.SpeechRec(); 
+let speechRecognizer = new p5.SpeechRec(); 
 
 /**
  * Description of setup
 */
 function setup() {
     createCanvas(windowWidth, windowHeight); 
+    speechRecognizer.onResult = handleResult; 
+    speechRecognizer.continuous = true;
+    speechRecognizer.start(); 
 }
 
 /**
  * Description of draw()
 */
 function draw() {
-
+    background(202, 100, 202);
+    // To display answers on canvas and to see if wrong, red and if right green 
+    if (currentAnswer === currentAnimal) {
+        fill(0, 200, 0);
+    }
+    else {
+        fill(200, 0, 0); 
+    }
+    textSize(32); 
+    textAlign(CENTER, CENTER); 
+    text(currentAnswer, width/2, height/2);
 }
 
 function mousePressed() {
@@ -175,6 +189,19 @@ function mousePressed() {
     let reverseAnimal = reverseString(currentAnimal);  
     // Use speechSynthesizer to speack reverse Animal 
     voice.speak(reverseAnimal); 
+}
+
+function handleResult() {
+    let guessedAnimal = `what?` // If the program didn't understand the user 
+    if (speechRecognizer.resultValue) { // Split method to break up the command into to two parts "i think it is" and the answer 
+        let lowerCaseResult = speechRecognizer.resultString.toLowerCase();
+        let parts = lowerCaseResult.split(`i think it is `); // remember the space before the actual answer 
+        if (parts.length > 1) { // If greater than one the program was able to split the answer into the two parts 
+            guessedAnimal = parts[1]; // 1 signifies the the users answer after "I think it is"
+        }
+    } 
+    currentAnswer = guessedAnimal; 
+    console.log(currentAnswer); 
 }
 
 /**
