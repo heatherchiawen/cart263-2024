@@ -18,32 +18,27 @@ function preload() {
 let voice = new p5.Speech(); // Speech synthesizer 
 let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer 
 
-let currentSpeech = ``; // What is currently being said 
+let currentSpeech = ` `; // What is currently being said 
 
 let endSpeech = `Looks like we have found your ideal match! Please click the button below to reveal`; 
 
 let data = [ {
-    category: `Relationship`,
     question: `What kind of relationship are you looking for?`,
     heard: `You said: Taxing`
 }, 
 {
-    category: `Hobbies`,
     question: `What are some of your hobbies?`,
     heard: `You said: Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
 }, 
 {
-    category: `Traits`,
     question: `What traits do you seek for in your ideal partner?`,
     heard: `You said: Deep pockets with a passion for aggravating the masses`
 }, 
 {
-    category: `Age`,
     question: `Age is just a number... but what number are you looking for?`,
     heard: `You said: 66...6`
 }, 
 {
-    category: `Looks`, 
     question: `Describe your dream appearance for your potential partner`,
     heard: `You said: Privileged cis-het white man who should retire`,
 }
@@ -63,9 +58,9 @@ function setup() {
     speechRecognizer.continuous = true; 
     speechRecognizer.start(); 
 
-    // To call text when speaking 
-    voice.onStart = speechStarted; 
-    voice.onEnd = speechEnded; 
+    // // To call text when speaking 
+    // voice.onStart = speechStarted; 
+    // voice.onEnd = speechEnded; 
 }
 
 
@@ -75,17 +70,22 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    if (showSubtitle) {
-        push(); 
-        fill(255); 
-        textStyle(BOLD);
-        textFont(`Helvetica`);
-        textSize(24);
-        text(data[currentQuestion].question, 100, 200); 
-        pop(); 
-    }
-
     displayInfo(); 
+
+    // if (showSubtitle) {
+    //     push(); 
+    //     fill(255); 
+    //     textStyle(BOLD);
+    //     textFont(`Helvetica`);
+    //     textSize(24);
+    //     let question = data[currentQuestion].question; 
+    //     text(question, 100, 200); 
+    //     pop(); 
+    // }
+
+    if (speechRecognizer.resultValue === true) {
+        text(currentSpeech, 100, 300);
+    } 
 }
 
 function displayInfo() {
@@ -100,10 +100,18 @@ function displayInfo() {
 }
 
 function mousePressed() {
+    // Or maybe spli this into questions??
     voice.speak(data[currentQuestion].question); 
 }
 
 function handleResult() { 
+    // For user subtitles 
+    currentSpeech = speechRecognizer.resultString; 
+
+    // ADD TO THIS TO REPLACE 
+    // let question = voice.speak(data[currentQuestion].question); 
+    // if statement that says if currentSpeech... then there is delay in questions??? see line 115 
+
     // To see if it is detecting speech input 
     if (speechRecognizer.resultValue === true) {
         console.log(speechRecognizer.resultString); 
