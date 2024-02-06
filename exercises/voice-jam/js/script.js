@@ -21,6 +21,8 @@ let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer
 let currentChatSpeech = ``; // Current speech for the bot 
 let currentSpeech = ``; // What is currently being said 
 
+let endSpeech = `Looks like we have found your ideal match! Please click the button below to reveal`; 
+
 let data = [ {
     category: `Relationship`,
     question: `What kind of relationship are you looking for?`,
@@ -54,8 +56,6 @@ let data = [ {
 ];
 
 let currentQuestion = 0; 
-//     `Looks like we have found your ideal match! Please click the button below to reveal`
-
 
 let showSubtitle = false; 
 // let state = `title`; 
@@ -66,11 +66,17 @@ let showSubtitle = false;
 function setup() {
     createCanvas(windowHeight, windowWidth); 
     speechRecognizer.onResult = handleResult; // Set up function to use 
-    speechRecognizer.continuous = true; 
     speechRecognizer.start(); 
+    speechRecognizer.continuous = true; 
 
-    voice.onStart = speechStarted; 
-    voice.onEnd = speechEnded; 
+    // if (speechRecognizer) {
+    //     speechRecognizer.start(); 
+    //     speechRecognizer.addCallback(`result`, handleResult); 
+    // }
+
+    // // To call text when speaking 
+    // voice.onStart = speechStarted; 
+    // voice.onEnd = speechEnded; 
 }
 
 
@@ -80,81 +86,58 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    // if (state === `title`) {
-    //     title(); 
-    // } else if (state === `simulation`) {
-    //     simulation(); 
-    // } else if (state === `end`) {
-    //     end(); 
-    // }
-
-    // Get rid of this when states are done 
-    push(); 
-    textSize(24); 
-    textAlign(CENTER); 
-    rectMode(CENTER); // 
-    fill(0); 
-    text(currentSpeech, width/2, height/2, width - width/10, height/2); 
-    pop(); 
-
-    if (showSubtitle) {
-        push();
-        text(toSay, width/2, height/2, width - width/10, height/4);
-        pop();  
-    }
+    displayQuestion(); 
+    displayProfile();
 }
 
 function mousePressed() {
-    // let currentChatSpeech
+    voice.speak(data[currentQuestion].question); 
+    // Add something that waits for the user to answer 
 }
 
-function speechStarted() {
-    showSubtitle;
-}
-
-function speechEnded() {
-    !showSubtitle; 
-}
-
-function handleResult() {
-    currentSpeech = speechRecognizer.resultString; 
-    // if (speechRecognizer.resultString.toLowerCase() === ` `) {
-
-    // }
-}
-
-function title() {
-    push(); 
-    textSize(24); 
-    textAlign(CENTER); 
-    rectMode(CENTER); // 
-    fill(0); 
-    text(`In the spirit of Valentines day, we want find your ideal match. Please click the heart to continue`, width/2, height/2, width - width/10, height/2); 
-    pop(); 
-}
-
-function simulation() {
-    push(); 
-    textSize(24); 
-    textAlign(CENTER); 
-    rectMode(CENTER); // 
-    fill(0); 
-    text(currentSpeech, width/2, height/2, width - width/10, height/2); 
-    pop(); 
-
-    if (showSubtitle) {
-        push();
-        text(toSay, width/2, height/2, width - width/10, height/4);
-        pop();  
+function handleResult() { 
+   // If program detects sound  
+   if (speechRecognizer.resultValue) {
+    // Then repeat what is "heard"
+    data[currentQuestion].answer = data[currentQuestion.heard]; 
+    // Then move on to the next question 
+   }
+    // Go to the next question 
+    currentQuestion++; 
+    // If last question then stop listening // this sound be an else if statement ???
+    if (currentQuestion >= data.length) {
+        voice.removeCallback(`result`); 
     }
 }
 
-function end() {
-    push(); 
-    textSize(24); 
-    textAlign(CENTER); 
-    rectMode(CENTER); // 
-    fill(0); 
-    text(`You found a match!`, width/2, height/2, width - width/10, height/2); 
-    pop(); 
+function displayQuestion() { // Copied from misheard-dating-profile code by Pippin 
+    // Make sure our current question is still valid
+  if (currentQuestion < data.length) {
+    // If so, display the question
+    push();
+    fill(255);
+    textStyle(BOLD);
+    textFont(`Helvetica`);
+    textSize(24);
+    let question = data[currentQuestion].question;
+    text(question, 100, 100);
+    pop();
+  }
 }
+
+function displayProfile() { // Copied from misheard-dating-profile code by Pippin 
+    push();
+    fill(255);
+    textFont(`Courier`);
+    textSize(18);
+    // A header
+    let dataString = `Dating profile\n\n`;
+    // Loop through the data array to display the categories and answers
+    for (let i = 0; i < data.length; i++) {
+      // Add the current category and answer to our string to display
+      dataString += `${data[i].category}: ${data[i].answer}\n`;
+    }
+    // Display the string
+    text(dataString, 100, 200);
+    pop();
+  }
