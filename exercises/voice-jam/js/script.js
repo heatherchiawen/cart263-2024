@@ -52,16 +52,16 @@ let data = [ {
 let currentQuestion = 0; 
 
 let showSubtitle = false; 
-// let state = `title`; 
+let state = `title`; 
 
 /**
  * Description of setup
 */
 function setup() {
-    createCanvas(windowHeight, windowWidth); 
+    createCanvas(windowWidth, windowHeight); 
     speechRecognizer.onResult = handleResult; 
-    speechRecognizer.start(); 
     speechRecognizer.continuous = true; 
+    speechRecognizer.start(); 
 
     // // To call text when speaking 
     // voice.onStart = speechStarted; 
@@ -75,40 +75,55 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    if (speechRecognizer.resultString) {
-        handleResult(currentQuestion); 
+    if (state === `title`) {
+        title();
+    }
+    else if (state === `simulation`) {
+        simulation(); 
     }
 
-    displayQuestion(); 
+    // displayQuestion(); 
     // displayProfile();
+
+//     if (showSubtitle) {
+//         textSize(18); 
+//         text(??, 100, 100); 
+//     }
 }
 
 function mousePressed() {
-    voice.speak(data[currentQuestion].question); 
-    
-    // Add something that waits for the user to answer 
+    if (state === `title`) {
+        state = `simulation`;
+    }
 }
 
 function handleResult() { 
-
     // To see if it is detecting speech input 
     if (speechRecognizer.resultValue === true) {
         console.log(speechRecognizer.resultString); 
-    }
-
-    // currentSpeech = speechRecognizer.resultString; 
-    // If program detects sound  
-    if (speechRecognizer.resultValue) {
-        // Then repeat what is "heard"
-        voice.speak(data[currentQuestion].heard); 
-        // Go to the next question 
-        currentQuestion++;
-    }
-    
+    } 
+    // Program says what is "heard"
+    voice.speak(data[currentQuestion].heard);
+    // Go to the next question 
+    currentQuestion++;
     // // If last question then stop listening // this sound be an else if statement ???
     // if (currentQuestion >= data.length) {
     //     voice.removeCallback(`result`); 
     // }
+}
+
+function title() {
+    push();
+     textSize(24); 
+     fill(200, 100, 100);
+     textAlign(CENTER, CENTER);
+     text('In the spirit of Valentines day, we want find your ideal match. Please click the heart to continue', width/2, height/2);
+     pop();
+}
+
+function simulation() {
+    voice.speak(data[currentQuestion].question); 
+
 }
 
 function displayQuestion() { // Copied from misheard-dating-profile code by Pippin 
@@ -143,4 +158,9 @@ function displayProfile() { // Copied from misheard-dating-profile code by Pippi
     pop();
   }
 
-  
+function speechStarted() { // For text to show when voice is speaking 
+    showSubtitle = true; 
+}
+function speechEnded() { // For text to not sho wwhen voice is not speaking 
+    showSubtitle = false; 
+}
