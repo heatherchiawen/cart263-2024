@@ -63,9 +63,9 @@ function setup() {
     speechRecognizer.continuous = true; 
     speechRecognizer.start(); 
 
-    // // To call text when speaking 
-    // voice.onStart = speechStarted; 
-    // voice.onEnd = speechEnded; 
+    // To call text when speaking 
+    voice.onStart = speechStarted; 
+    voice.onEnd = speechEnded; 
 }
 
 
@@ -75,26 +75,32 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    if (state === `title`) {
-        title();
-    }
-    else if (state === `simulation`) {
-        simulation(); 
+    if (showSubtitle) {
+        push(); 
+        fill(255); 
+        textStyle(BOLD);
+        textFont(`Helvetica`);
+        textSize(24);
+        text(data[currentQuestion].question, 100, 200); 
+        pop(); 
     }
 
-    // displayQuestion(); 
-    // displayProfile();
+    displayInfo(); 
+}
 
-//     if (showSubtitle) {
-//         textSize(18); 
-//         text(??, 100, 100); 
-//     }
+function displayInfo() {
+    push(); 
+    fill(255);
+    textStyle(BOLD);
+    textFont(`Helvetica`);
+    textSize(24);
+    text(`click for next question`, 100, 50); 
+    pop(); 
+
 }
 
 function mousePressed() {
-    if (state === `title`) {
-        state = `simulation`;
-    }
+    voice.speak(data[currentQuestion].question); 
 }
 
 function handleResult() { 
@@ -104,59 +110,16 @@ function handleResult() {
     } 
     // Program says what is "heard"
     voice.speak(data[currentQuestion].heard);
+    // And displays it 
+
+
     // Go to the next question 
     currentQuestion++;
-    // // If last question then stop listening // this sound be an else if statement ???
-    // if (currentQuestion >= data.length) {
-    //     voice.removeCallback(`result`); 
-    // }
-}
-
-function title() {
-    push();
-     textSize(24); 
-     fill(200, 100, 100);
-     textAlign(CENTER, CENTER);
-     text('In the spirit of Valentines day, we want find your ideal match. Please click the heart to continue', width/2, height/2);
-     pop();
-}
-
-function simulation() {
-    voice.speak(data[currentQuestion].question); 
-
-}
-
-function displayQuestion() { // Copied from misheard-dating-profile code by Pippin 
-    // Make sure our current question is still valid
-  if (currentQuestion < data.length) {
-    // If so, display the question
-    push();
-    fill(255);
-    textStyle(BOLD);
-    textFont(`Helvetica`);
-    textSize(24);
-    let question = data[currentQuestion].question;
-    text(question, 100, 100);
-    pop();
-  }
-}
-
-function displayProfile() { // Copied from misheard-dating-profile code by Pippin 
-    push();
-    fill(255);
-    textFont(`Courier`);
-    textSize(18);
-    // A header
-    let dataString = `Dating profile\n\n`;
-    // Loop through the data array to display the categories and answers
-    for (let i = 0; i < data.length; i++) {
-      // Add the current category and answer to our string to display
-      dataString += `${data[i].category}: ${data[i].answer}\n`;
+    // If last question then stop listening // this sound be an else if statement ???
+    if (currentQuestion >= data.length) {
+        voice.removeCallback(`result`); 
     }
-    // Display the string
-    text(dataString, 100, 200);
-    pop();
-  }
+}
 
 function speechStarted() { // For text to show when voice is speaking 
     showSubtitle = true; 
