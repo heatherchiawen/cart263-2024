@@ -15,39 +15,38 @@ function preload() {
 
 }
 
-let voice = new p5.Speech(); // Speech synthesizer 
-let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer 
-
-let currentSpeech = ` `; // What is currently being said 
-
-let endSpeech = `Looks like we have found your ideal match! Please click the button below to reveal`; 
-
 let data = [ {
     question: `What kind of relationship are you looking for?`,
-    heard: `You said: Taxing`
+    heard: `Taxing`
 }, 
 {
     question: `What are some of your hobbies?`,
-    heard: `You said: Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
+    heard: `Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
 }, 
 {
     question: `What traits do you seek for in your ideal partner?`,
-    heard: `You said: Deep pockets with a passion for aggravating the masses`
+    heard: `Deep pockets with a passion for aggravating the masses`
 }, 
 {
     question: `Age is just a number... but what number are you looking for?`,
-    heard: `You said: 66...6`
+    heard: `66...6`
 }, 
 {
     question: `Describe your dream appearance for your potential partner`,
-    heard: `You said: Privileged cis-het white man who should retire`,
+    heard: `Privileged cis-het white man who should retire`
 }
 ];
 
 let currentQuestion = 0; 
 
-let showSubtitle = false; 
-let state = `title`; 
+let currentSpeech = ``; // What is currently being said 
+let displayText = ``; 
+let displayQuestion = false; 
+
+let voice = new p5.Speech(); // Speech synthesizer 
+let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer 
+
+
 
 /**
  * Description of setup
@@ -57,10 +56,6 @@ function setup() {
     speechRecognizer.onResult = handleResult; 
     speechRecognizer.continuous = true; 
     speechRecognizer.start(); 
-
-    // // To call text when speaking 
-    // voice.onStart = speechStarted; 
-    // voice.onEnd = speechEnded; 
 }
 
 
@@ -70,22 +65,39 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    displayInfo(); 
+    if (displayQuestion === true) {
+        push();
+        fill(255);
+        textStyle(BOLD);
+        textFont(`Helvetica`);
+        textSize(24);
+        let question = data[currentQuestion].question;
+        text(question, 100, 100);
+        pop();
+    }
+    displayProfile();
+}
 
-    // if (showSubtitle) {
-    //     push(); 
-    //     fill(255); 
-    //     textStyle(BOLD);
-    //     textFont(`Helvetica`);
-    //     textSize(24);
-    //     let question = data[currentQuestion].question; 
-    //     text(question, 100, 200); 
-    //     pop(); 
-    // }
+function mousePressed() {
+    displayQuestion === true; 
+    voice.speak(data[currentQuestion].question);
+}
 
+function handleResult() { 
+    // To see if it is detecting speech input 
     if (speechRecognizer.resultValue === true) {
-        text(currentSpeech, 100, 300);
+        console.log(speechRecognizer.resultString); 
+        currentSpeech = speechRecognizer.resultString; 
+        // Program says what is "heard"
+        voice.speak(`Did you say:${data[currentQuestion].heard}?`);
+        // Add something that displays the heard answer with a function? Maybe look into how to preperly use callbacks??
     } 
+    // Go to the next question 
+    currentQuestion++;
+    // If last question then stop listening
+    if (currentQuestion >= data.length) {
+        voice.removeCallback(`result`); 
+    }
 }
 
 function displayInfo() {
@@ -96,42 +108,24 @@ function displayInfo() {
     textSize(24);
     text(`click for next question`, 100, 50); 
     pop(); 
-
 }
-
-function mousePressed() {
-    // Or maybe spli this into questions??
-    voice.speak(data[currentQuestion].question); 
-}
-
-function handleResult() { 
-    // For user subtitles 
-    currentSpeech = speechRecognizer.resultString; 
-
-    // ADD TO THIS TO REPLACE 
-    // let question = voice.speak(data[currentQuestion].question); 
-    // if statement that says if currentSpeech... then there is delay in questions??? see line 115 
-
-    // To see if it is detecting speech input 
-    if (speechRecognizer.resultValue === true) {
-        console.log(speechRecognizer.resultString); 
-    } 
-    // Program says what is "heard"
-    voice.speak(data[currentQuestion].heard);
-    // And displays it 
-
-
-    // Go to the next question 
-    currentQuestion++;
-    // If last question then stop listening // this sound be an else if statement ???
-    if (currentQuestion >= data.length) {
-        voice.removeCallback(`result`); 
+  
+  /**
+  Displays the current state of the dating profile
+  */
+  function displayProfile() {
+    push();
+    fill(255);
+    textFont(`Courier`);
+    textSize(18);
+    // A header
+    let dataString = `Your answers:\n\n\n`;
+    // Loop through the data array to display the categories and answers
+    for (let i = 0; i < data.length; i++) {
+      // Add the current category and answer to our string to display
+      dataString += `${data[i].question}:\n\n\n`;
     }
-}
-
-function speechStarted() { // For text to show when voice is speaking 
-    showSubtitle = true; 
-}
-function speechEnded() { // For text to not sho wwhen voice is not speaking 
-    showSubtitle = false; 
-}
+    // Display the string
+    text(dataString, 100, 200);
+    pop();
+  }
