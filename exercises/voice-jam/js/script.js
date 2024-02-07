@@ -37,9 +37,9 @@ let data = [ {
 }
 ];
 
-let currentQuestion = 0; 
-let displayText = ``; 
+let currentQuestion = 0; // To start questions in sequential order 
 
+let displayText = ``; // Text to appear
 let currentSpeech = ``; // What is currently being said 
 
 let voice = new p5.Speech(); // Speech synthesizer 
@@ -62,64 +62,30 @@ function draw() {
     background(230, 181, 223); 
 
     // Add in title state with loading in images in preload 
-
-    // This should be stored in the simulation state 
-    // displayQuestion(); 
-    // displayHeardAnswer(); 
-
     text(displayText, width/2, height/2); 
     // Add in ending state with loading in images in preload 
 }
 
 function mousePressed() {
-    // Move this to another state? Add the code to switch between states 
-    // Maybe have the heart ask the questions? 
     voice.speak(data[currentQuestion].question);
-    // displayQuestion(); 
+    displayText = `${data[currentQuestion].question}`; 
 }
 
 function handleResult() { 
     // To see if it is detecting speech input 
     if (speechRecognizer.resultValue === true) {
         console.log(speechRecognizer.resultString); 
-        currentSpeech = speechRecognizer.resultString; 
+        currentSpeech = speechRecognizer.resultString; // Keep to see if I can add an option if the user says no the the answer 
         // Program says what is "heard"
-        voice.speak(`You said:${data[currentQuestion].heard}`);
-        // Add something that displays the heard answer with a function? Maybe look into how to preperly use callbacks??
-        // displayHeardAnswer(); 
-        displayText = `${data[currentQuestion].heard}`; 
+        voice.speak(`You said:${data[currentQuestion].heard}, is that correct?`);
+        // Displays what is heard 
+        displayText = `You said: "${data[currentQuestion].heard}"`; 
     } 
     // Go to the next question 
     currentQuestion++;
     // If last question then stop listening
     if (currentQuestion >= data.length) {
         voice.removeCallback(`result`); 
-    }
-}
-
-function displayQuestion() {
-    // Make sure our current question is still valid
-    if (currentQuestion < data.length) {
-      // If so, display the question
-      push();
-      fill(255);
-      textStyle(BOLD);
-      textFont(`Helvetica`);
-      textSize(24);
-      let question = data[currentQuestion].question;
-      text(question, 100, 100);
-      pop();
-    }
-}
-
-function displayHeardAnswer() {
-    if (currentQuestion < data.length) {
-    push();
-    fill(0);
-    textFont(`Courier`);
-    textSize(14);
-    text(`${data[currentQuestion].heard}`, 120, 230); 
-    pop(); 
     }
 }
 
