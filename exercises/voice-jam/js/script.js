@@ -15,7 +15,7 @@ let chatBox;
  * Description of preload
 */
 function preload() {
-    heart = loadImage(`assets/images/heart.jpg`); 
+    heart = loadImage(`assets/images/heart.png`); 
     chatBox = loadImage(`assets/images/chatBox.png`); 
 }
 
@@ -66,10 +66,16 @@ function draw() {
     background(230, 181, 223); 
 
     // Add in title state with loading in images in preload 
-    text(displayText, width/2, height/2); 
-    // Add in ending state with loading in images in preload 
+    image(heart, width/2, height/2, 100, 150); 
+    image(chatBox, width/2 - 300, height/6, 400); 
 
-    image(chatBox, 100, 100, width/2, height/2); 
+    fill(0);
+    textStyle(BOLD);
+    textFont(`DotGothic16`);
+    textSize(14);
+    text(displayText, width/2 - 240, height/2 - 100); 
+
+    // Add in ending state with loading in images in preload 
 }
 
 function mousePressed() {
@@ -96,26 +102,11 @@ function handleResult() {
 }
 
 // function title() {
-//     push(); 
-//     fill(255);
-//     textStyle(BOLD);
-//     textFont(`Helvetica`);
-//     textSize(24);
-//     text(`In the spirit of Valentines day, we want find your ideal match. Please click the heart to continue`, 100, 50); 
-//     pop(); 
 // }
 
 // function simulation() {
-    // displayProfile();
-    // displayInfo(); 
 // }
 
 // function ending() {
-//     push(); 
-//     fill(255);
-//     textStyle(BOLD);
-//     textFont(`Helvetica`);
-//     textSize(24);
-//     text(`Get that bag I guess…`, width/2, height/0.5); 
-//     pop(); 
+//     displayText = `Get that bag I guess…`; 
 // }
