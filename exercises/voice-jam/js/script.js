@@ -8,11 +8,17 @@
 
 "use strict";
 
+let heart;
+let rose;
+let chatBox;
+
 /**
  * Description of preload
 */
 function preload() {
-
+    heart = loadImage(`assets/images/heartjpg`); 
+    rose = loadImage(`assets/images/rosejpg`); 
+    chatBox = loadImage(`assets/images/chatBox.png`); 
 }
 
 let data = [ {
@@ -64,6 +70,8 @@ function draw() {
     // Add in title state with loading in images in preload 
     text(displayText, width/2, height/2); 
     // Add in ending state with loading in images in preload 
+
+    image(heart, 100, 100, width/2, height/2); 
 }
 
 function mousePressed() {
