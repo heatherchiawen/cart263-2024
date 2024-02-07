@@ -16,34 +16,29 @@ function preload() {
 }
 
 let data = [ {
-    category: `Relationship`,
     question: `What kind of relationship are you looking for?`,
     heard: `Taxing`
 }, 
 {
-    category: `Hobbies`,
     question: `What are some of your hobbies?`,
     heard: `Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
 }, 
 {
-    category: `Traits`,
     question: `What traits do you seek for in your ideal partner?`,
     heard: `Deep pockets with a passion for aggravating the masses`
 }, 
 {
-    category: `Age`,
     question: `Age is just a number... but what number are you looking for?`,
     heard: `66...6`
 }, 
 {
-    category: `Looks`, 
     question: `Describe your dream appearance for your potential partner`,
     heard: `Privileged cis-het white man who should retire`
 }
 ];
 
 let currentQuestion = 0; 
-let currentAnswer = false; 
+let displayText = ``; 
 
 let currentSpeech = ``; // What is currently being said 
 
@@ -69,11 +64,10 @@ function draw() {
     // Add in title state with loading in images in preload 
 
     // This should be stored in the simulation state 
-    displayProfile();
-    // displayInfo(); 
-    displayQuestion(); 
+    // displayQuestion(); 
     // displayHeardAnswer(); 
 
+    text(displayText, width/2, height/2); 
     // Add in ending state with loading in images in preload 
 }
 
@@ -92,7 +86,8 @@ function handleResult() {
         // Program says what is "heard"
         voice.speak(`You said:${data[currentQuestion].heard}`);
         // Add something that displays the heard answer with a function? Maybe look into how to preperly use callbacks??
-        displayHeardAnswer(); 
+        // displayHeardAnswer(); 
+        displayText = `${data[currentQuestion].heard}`; 
     } 
     // Go to the next question 
     currentQuestion++;
@@ -100,35 +95,6 @@ function handleResult() {
     if (currentQuestion >= data.length) {
         voice.removeCallback(`result`); 
     }
-}
-
-function displayInfo() {
-    push(); 
-    fill(255);
-    textStyle(BOLD);
-    textFont(`Helvetica`);
-    textSize(24);
-    text(`click for next question`, 100, 50); 
-    pop(); 
-
-    // if voice has said the heard of the current question, then, display the heard below the answers 
-}
-
-function displayProfile() {
-    push();
-    fill(255);
-    textFont(`Courier`);
-    textSize(18);
-    // Loop through the data array to display the categories and answers
-    let dataStringCategory;
-    for (let i = 0; i < data.length; i++) {
-      // Question display 
-      dataStringCategory += `${data[i].category}:\n\n\n`;
-      noLoop(); 
-    }
-    // Display the string
-    text(dataStringCategory, 100, 200);
-    pop();
 }
 
 function displayQuestion() {
@@ -147,19 +113,37 @@ function displayQuestion() {
 }
 
 function displayHeardAnswer() {
-    // Maybe create a variable that is true or false and if its true then the new answer is revealed 
-    let dataStringHeard; 
-    // for (let i = 0; i < data.length; i++) {
-    //     dataStringHeard += `${data[i].heard}\n\n\n\n`; 
-    //     noLoop(); 
-    // }
     if (currentQuestion < data.length) {
-        push();
-        fill(0);
-        textFont(`Courier`);
-        textSize(14);
-        dataStringHeard += `${data[currentQuestion].heard}`; 
-        text(dataStringHeard, 120, 230); 
-        pop(); 
+    push();
+    fill(0);
+    textFont(`Courier`);
+    textSize(14);
+    text(`${data[currentQuestion].heard}`, 120, 230); 
+    pop(); 
     }
 }
+
+// function title() {
+//     push(); 
+//     fill(255);
+//     textStyle(BOLD);
+//     textFont(`Helvetica`);
+//     textSize(24);
+//     text(`In the spirit of Valentines day, we want find your ideal match. Please click the heart to continue`, 100, 50); 
+//     pop(); 
+// }
+
+// function simulation() {
+    // displayProfile();
+    // displayInfo(); 
+// }
+
+// function ending() {
+//     push(); 
+//     fill(255);
+//     textStyle(BOLD);
+//     textFont(`Helvetica`);
+//     textSize(24);
+//     text(`Get that bag I guess…`, width/2, height/0.5); 
+//     pop(); 
+// }
