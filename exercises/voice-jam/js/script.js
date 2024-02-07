@@ -46,6 +46,8 @@ let currentQuestion = 0; // To start questions in sequential order
 let displayText = ``; // Text to appear
 let currentSpeech = ``; // What is currently being said 
 
+let state = `title`; // Starting state 
+
 let voice = new p5.Speech(); // Speech synthesizer 
 let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer 
 
@@ -65,22 +67,32 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
-    // Add in title state with loading in images in preload 
-    image(heart, width/2, height/2, 100, 150); 
-    image(chatBox, width/2 - 300, height/6, 400); 
+    if (state === `title`) {
+        title(); 
+    } else if (state === `simulation`) {
+        simulation(); 
+    } else if (state === `end` && currentQuestion >= data.length) {
+        end(); 
+    }
+
+    // image(heart, width/2, height/2, 100, 150); 
+    // image(chatBox, width/2 - 300, height/6, 400); 
 
     fill(0);
     textStyle(BOLD);
     textFont(`DotGothic16`);
     textSize(14);
-    text(displayText, width/2 - 240, height/2 - 120); 
-
-    // Add in ending state with loading in images in preload 
+    // text(displayText, width/2 - 240, height/2 - 120); 
 }
 
 function mousePressed() {
-    voice.speak(data[currentQuestion].question);
-    displayText = `${data[currentQuestion].question}`; 
+    if (state === `title`) {
+        state = `simulation`;
+    }
+    if (state === `simulation`) {
+        voice.speak(data[currentQuestion].question);
+        displayText = `${data[currentQuestion].question}`; 
+    }
 }
 
 function handleResult() { 
@@ -101,12 +113,20 @@ function handleResult() {
     }
 }
 
-// function title() {
-// }
+function title() {
+    displayText = `Looking for your ideal match this Valentines day?\nPlease click anywhere to continue.`; 
+    image(heart, width/2 - 200, height/2 - 75, 100, 150); 
+    text(displayText, width/2 - 90, height/2); 
+}
 
-// function simulation() {
-// }
+function simulation() {
+    erase(); 
+    image(heart, width/2, height/2, 100, 150); 
+    image(chatBox, width/2 - 300, height/6, 400); 
 
-// function ending() {
-//     displayText = `Get that bag I guess…`; 
-// }
+    text(displayText, width/2 - 240, height/2 - 120); 
+}
+
+function ending() {
+    displayText = `Looks like we have a match!\nGet that bag I guess…`; 
+}
