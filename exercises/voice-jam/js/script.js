@@ -20,24 +20,24 @@ function preload() {
 }
 
 let data = [ {
-    question: `What kind of relationship are you looking for?`,
+    question: `What kind of relationship\nare you looking for?`,
     heard: `Taxing`
 }, 
 {
     question: `What are some of your hobbies?`,
-    heard: `Increasing tuition fees for out-of-province and international students and ensuring public sector workers are not paid a livable wage all while making sure there is a surplus of money in my pocket`
+    heard: `Increasing tuition fees for\nout-of-province and international\nstudents and ensuring public sector\nworkers are not paid a livable wage\nall while making sure there is a\nsurplus of money in my pocket`
 }, 
 {
-    question: `What traits do you seek for in your ideal partner?`,
-    heard: `Deep pockets with a passion for aggravating the masses`
+    question: `What traits do you seek for in your\nideal partner?`,
+    heard: `Deep pockets with a passion\nfor aggravating the masses`
 }, 
 {
-    question: `Age is just a number... but what number are you looking for?`,
+    question: `Age is just a number...\nbut what number are you looking for?`,
     heard: `66...6`
 }, 
 {
-    question: `Describe your dream appearance for your potential partner`,
-    heard: `Privileged cis-het white man who should retire`
+    question: `Describe your dream appearance\nfor your potential partner`,
+    heard: `Pig`
 }
 ];
 
@@ -73,7 +73,7 @@ function draw() {
     textStyle(BOLD);
     textFont(`DotGothic16`);
     textSize(14);
-    text(displayText, width/2 - 240, height/2 - 100); 
+    text(displayText, width/2 - 240, height/2 - 120); 
 
     // Add in ending state with loading in images in preload 
 }
