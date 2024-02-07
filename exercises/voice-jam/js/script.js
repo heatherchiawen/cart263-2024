@@ -19,7 +19,8 @@ function preload() {
     chatBox = loadImage(`assets/images/chatBox.png`); 
 }
 
-let data = [ {
+
+let data = [ { // Referenced professor Pippin Barr’s “Misheard Dating Profile” simulation to create a data string. See README for citation. 
     question: `What kind of relationship\nare you looking for?`,
     heard: `Taxing`
 }, 
@@ -41,9 +42,11 @@ let data = [ {
 }
 ];
 
-let currentQuestion = 0; // To start questions in sequential order 
+// To start questions in sequential order
+let currentQuestion = 0; // Referenced from professor Pippin Barr’s “Misheard Dating Profile” simulation. See README for citation.  
 
-let displayText = ``; // Text to appear
+// Text to appear 
+let displayText = ``; // Referenced professor Pippin Barr’s “Re:programming” simulation. See README for citation. 
 let currentSpeech = ``; // What is currently being said 
 
 let state = `title`; // Starting state 
@@ -89,7 +92,7 @@ function mousePressed() {
     if (state === `title`) {
         state = `simulation`;
     }
-    if (state === `simulation`) {
+    else if (state === `simulation`) {
         voice.speak(data[currentQuestion].question);
         displayText = `${data[currentQuestion].question}`; 
     }
