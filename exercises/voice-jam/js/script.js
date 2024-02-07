@@ -9,15 +9,13 @@
 "use strict";
 
 let heart;
-let rose;
 let chatBox;
 
 /**
  * Description of preload
 */
 function preload() {
-    heart = loadImage(`assets/images/heartjpg`); 
-    rose = loadImage(`assets/images/rosejpg`); 
+    heart = loadImage(`assets/images/heart.jpg`); 
     chatBox = loadImage(`assets/images/chatBox.png`); 
 }
 
@@ -71,7 +69,7 @@ function draw() {
     text(displayText, width/2, height/2); 
     // Add in ending state with loading in images in preload 
 
-    image(heart, 100, 100, width/2, height/2); 
+    image(chatBox, 100, 100, width/2, height/2); 
 }
 
 function mousePressed() {
