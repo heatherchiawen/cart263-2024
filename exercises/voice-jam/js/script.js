@@ -22,23 +22,23 @@ function preload() {
 
 let data = [ { // Referenced professor Pippin Barr’s “Misheard Dating Profile” simulation to create a data string. See README for citation. 
     question: `What kind of relationship\nare you looking for?`,
-    heard: `Taxing`
+    heard: `You said: "Taxing."\nClick once for the next question.`
 }, 
 {
     question: `What are some of your hobbies?`,
-    heard: `Increasing tuition fees for\nout-of-province and international\nstudents and ensuring public sector\nworkers are not paid a livable wage\nall while making sure there is a\nsurplus of money in my pocket`
+    heard: `You said: "Increasing tuition fees for\nout-of-province and international\nstudents and ensuring public sector\nworkers are not paid a livable wage\nall while making sure there is a\nsurplus of money in my pocket."\nClick once for the next question.`
 }, 
 {
     question: `What traits do you seek for in your\nideal partner?`,
-    heard: `Deep pockets with a passion\nfor aggravating the masses`
+    heard: `You said: "Deep pockets with a passion\nfor aggravating the masses."\nClick once for the next question.`
 }, 
 {
     question: `Age is just a number...\nbut what number are you looking for?`,
-    heard: `66...6`
+    heard: `You said: "66...6."\nClick once for the next question.`
 }, 
 {
-    question: `Describe your dream appearance\nfor your potential partner`,
-    heard: `Pig`
+    question: `Describe your dream appearance\nfor your potential partner.`,
+    heard: `You said: "Pig."\nIt seems like we have a match.\nClick any key to reveal.`
 }
 ];
 
@@ -74,46 +74,43 @@ function draw() {
         title(); 
     } else if (state === `simulation`) {
         simulation(); 
-    } else if (state === `end` && currentQuestion >= data.length) {
+    } else if (state === `end`) {
         end(); 
     }
 
-    // image(heart, width/2, height/2, 100, 150); 
-    // image(chatBox, width/2 - 300, height/6, 400); 
-
+    // Text Settings 
     fill(0);
     textStyle(BOLD);
     textFont(`DotGothic16`);
     textSize(14);
-    // text(displayText, width/2 - 240, height/2 - 120); 
 }
 
 function mousePressed() {
     if (state === `title`) {
         state = `simulation`;
+        askingQuestion();
+    } else if (state === `simulation`) {
+            askingQuestion(); 
     }
-    else if (state === `simulation`) {
-        voice.speak(data[currentQuestion].question);
-        displayText = `${data[currentQuestion].question}`; 
-    }
+}
+
+function askingQuestion() {
+    voice.speak(data[currentQuestion].question);
+    displayText = `${data[currentQuestion].question}`;    
 }
 
 function handleResult() { 
     // To see if it is detecting speech input 
     if (speechRecognizer.resultValue === true) {
         console.log(speechRecognizer.resultString); 
-        currentSpeech = speechRecognizer.resultString; // Keep to see if I can add an option if the user says no the the answer 
-        // Program says what is "heard"
-        voice.speak(`You said:${data[currentQuestion].heard}, is that correct?`);
+        currentSpeech = speechRecognizer.resultString; 
         // Displays what is heard 
-        displayText = `You said: "${data[currentQuestion].heard}"`; 
+        displayText = `${data[currentQuestion].heard}`; 
+        // Program says what is "heard"
+        voice.speak(displayText);
     } 
     // Go to the next question 
     currentQuestion++;
-    // If last question then stop listening
-    if (currentQuestion >= data.length) {
-        voice.removeCallback(`result`); 
-    }
 }
 
 function title() {
@@ -126,10 +123,13 @@ function simulation() {
     erase(); 
     image(heart, width/2, height/2, 100, 150); 
     image(chatBox, width/2 - 300, height/6, 400); 
-
-    text(displayText, width/2 - 240, height/2 - 120); 
+    text(displayText, width/2 - 240, height/2 - 135); 
+    if (keyIsPressed) {
+        state = `ending`; 
+    }
 }
 
 function ending() {
-    displayText = `Looks like we have a match!\nGet that bag I guess…`; 
+    erase();
+    displayText = `Get that bag I guess…`; 
 }
