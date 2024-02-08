@@ -8,13 +8,7 @@
 
 "use strict";
 
-// Images 
-let heart;
-let chatBox;
-// Array and amount of hearts that will show up at the ending state 
-let heartDrops = []; 
-let numHeartDrops = 150; 
-
+// Questions and heard information used in text and speech 
 let data = [ { // Referenced professor Pippin Barr’s “Misheard Dating Profile” simulation to create a data string. See README for citation. 
     question: `What kind of relationship\nare you looking for?`,
     heard: `You said: "Taxing."\nClick once for the next question.`
@@ -49,6 +43,14 @@ let state = `title`; // Starting state
 let voice = new p5.Speech(); // Speech synthesizer 
 let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer
 
+// Images 
+let heart;
+let chatBox;
+
+// Array and amount of hearts that will show up at the ending state 
+let heartDrops = []; 
+let numHeartDrops = 150; 
+
 /**
  * Description of preload
 */
@@ -62,8 +64,8 @@ function preload() {
 */
 function setup() {
     createCanvas(windowWidth, windowHeight); 
-    speechRecognizer.onResult = handleResult; 
-    speechRecognizer.continuous = true; 
+    speechRecognizer.onResult = handleResult; // Sends detected speech to handleResult()
+    speechRecognizer.continuous = true; // SpeechRecognizer is continuously on  
     speechRecognizer.start(); 
     setupHearts(); // Sets up heart array for the ending state 
 }
@@ -74,6 +76,7 @@ function setup() {
 function draw() {
     background(230, 181, 223); 
 
+    // To call functions based on what state the program is in 
     if (state === `title`) {
         title(); 
     } else if (state === `simulation`) {
@@ -82,29 +85,28 @@ function draw() {
         ending(); 
     }
 
-    // Text Settings 
+    // Default text 
     fill(0);
-    textStyle(BOLD);
     textFont(`DotGothic16`);
     textSize(14);
 }
 
 function mousePressed() {
+    // Porgram asks question as the program switches states and continues in the simulation state 
     if (state === `title`) {
         state = `simulation`;
         askingQuestion();
     } else if (state === `simulation`) {
-            askingQuestion(); 
+        askingQuestion(); 
     }
 }
 
-function askingQuestion() {
+function askingQuestion() { // Initiates questions and displays them, called in mousePressed()
     voice.speak(data[currentQuestion].question);
     displayText = `${data[currentQuestion].question}`;    
 }
 
-function handleResult() { 
-    // To see if it is detecting speech input 
+function handleResult() { // To handle speechRecognizer  
     if (speechRecognizer.resultValue === true) {
         console.log(speechRecognizer.resultString); 
         currentSpeech = speechRecognizer.resultString; 
@@ -118,38 +120,49 @@ function handleResult() {
 }
 
 function title() {
+    // Image and text displays for the title state 
     displayText = `Looking for your ideal match this Valentines day?\nPlease click anywhere to continue.`; 
     image(heart, width/2 - 200, height/2 - 75, 100, 150); 
     text(displayText, width/2 - 90, height/2); 
 }
 
 function simulation() {
-    erase(); 
+    erase(); // Erasing images and text from previous state 
+
+    // Image and text displays 
     image(heart, width/2, height/2, 100, 150); 
     image(chatBox, width/2 - 300, height/6, 400); 
     text(displayText, width/2 - 240, height/2 - 135); 
+
+    // If any key is pressed switch to ending state 
     if (keyIsPressed) {
         state = `ending`; 
     }
 }
 
 function ending() {
-    erase();
+    erase(); // Erasing images and text from previous state 
+
+    // text display 
     displayText = `Get that bag I guess…`; 
-    text(displayText, width/2 - 240, height/2 - 135); 
+    textSize(24);
+    textAlign(CENTER); 
+    text(displayText, width/2, height/4); 
+
+    // Loop for heart display and moving
     for (let i = 0; i < numHeartDrops; i++) {
         displayHearts(heartDrops[i]); 
     }
 }
 
-function setupHearts() {
+function setupHearts() { // Sets up hearts display for ending state, called in setup()
     for (let i = 0; i < numHeartDrops; i++) {
         let hearts = createHearts(random(0, width), random(0, height));
         heartDrops.push(hearts);
     }
 }
 
-function createHearts(x, y) {
+function createHearts(x, y) { // Creating hearts called in setup Function 
     let hearts = {
         x: x, 
         y: y, 
@@ -161,9 +174,7 @@ function createHearts(x, y) {
     return hearts; 
 }
 
-function displayHearts(hearts) {
-    push(); 
+function displayHearts(hearts) { // Hearts image display and movement 
     image(heart, hearts.x, hearts.y, hearts.width, hearts.height);
-    pop(); 
     hearts.y += hearts.speed*hearts.gravity; 
 }
