@@ -8,17 +8,12 @@
 
 "use strict";
 
+// Images 
 let heart;
 let chatBox;
-
-/**
- * Description of preload
-*/
-function preload() {
-    heart = loadImage(`assets/images/heart.png`); 
-    chatBox = loadImage(`assets/images/chatBox.png`); 
-}
-
+// Array and amount of hearts that will show up at the ending state 
+let heartDrops = []; 
+let numHeartDrops = 150; 
 
 let data = [ { // Referenced professor Pippin Barr’s “Misheard Dating Profile” simulation to create a data string. See README for citation. 
     question: `What kind of relationship\nare you looking for?`,
@@ -52,7 +47,15 @@ let currentSpeech = ``; // What is currently being said
 let state = `title`; // Starting state 
 
 let voice = new p5.Speech(); // Speech synthesizer 
-let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer 
+let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer
+
+/**
+ * Description of preload
+*/
+function preload() {
+    heart = loadImage(`assets/images/heart.png`); 
+    chatBox = loadImage(`assets/images/chatBox.png`); 
+}
 
 /**
  * Description of setup
@@ -62,6 +65,7 @@ function setup() {
     speechRecognizer.onResult = handleResult; 
     speechRecognizer.continuous = true; 
     speechRecognizer.start(); 
+    setupHearts(); // Sets up heart array for the ending state 
 }
 
 /**
@@ -74,8 +78,8 @@ function draw() {
         title(); 
     } else if (state === `simulation`) {
         simulation(); 
-    } else if (state === `end`) {
-        end(); 
+    } else if (state === `ending`) {
+        ending(); 
     }
 
     // Text Settings 
@@ -132,4 +136,34 @@ function simulation() {
 function ending() {
     erase();
     displayText = `Get that bag I guess…`; 
+    text(displayText, width/2 - 240, height/2 - 135); 
+    for (let i = 0; i < numHeartDrops; i++) {
+        displayHearts(heartDrops[i]); 
+    }
+}
+
+function setupHearts() {
+    for (let i = 0; i < numHeartDrops; i++) {
+        let hearts = createHearts(random(0, width), random(0, height));
+        heartDrops.push(hearts);
+    }
+}
+
+function createHearts(x, y) {
+    let hearts = {
+        x: x, 
+        y: y, 
+        width: 100,
+        height: 150, 
+        speed: random(5, 10),
+        gravity: 1.05
+    };
+    return hearts; 
+}
+
+function displayHearts(hearts) {
+    push(); 
+    image(heart, hearts.x, hearts.y, hearts.width, hearts.height);
+    pop(); 
+    hearts.y += hearts.speed*hearts.gravity; 
 }
