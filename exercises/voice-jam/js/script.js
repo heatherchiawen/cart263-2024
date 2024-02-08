@@ -144,10 +144,9 @@ function ending() {
     erase(); // Erasing images and text from previous state 
 
     // text display 
-    displayText = `Get that bag I guess…`; 
     textSize(24);
     textAlign(CENTER); 
-    text(displayText, width/2, height/4); 
+    text(`Get that bag I guess…`, width/2, height/4); 
 
     // Loop for heart display and moving
     for (let i = 0; i < numHeartDrops; i++) {
