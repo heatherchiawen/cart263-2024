@@ -46,6 +46,7 @@ let speechRecognizer = new p5.SpeechRec(); // Speech Recognizer
 // Images 
 let heart;
 let chatBox;
+let pig; 
 
 // Array and amount of hearts that will show up at the ending state 
 let heartDrops = []; 
@@ -57,6 +58,7 @@ let numHeartDrops = 150;
 function preload() {
     heart = loadImage(`assets/images/heart.png`); 
     chatBox = loadImage(`assets/images/chatBox.png`); 
+    pig = loadImage(`assets/images/pig.png`); 
 }
 
 /**
@@ -147,6 +149,10 @@ function ending() {
     textSize(24);
     textAlign(CENTER); 
     text(`Get that bag I guess…`, width/2, height/4); 
+
+    // Pig image display 
+    imageMode(CENTER); 
+    image(pig, width/2, height/2, 300, 375); 
 
     // Loop for heart display and moving
     for (let i = 0; i < numHeartDrops; i++) {
