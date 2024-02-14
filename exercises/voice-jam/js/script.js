@@ -1,9 +1,10 @@
 /**
- * Voice Jam 
+ * Voice Jam - Predetermined Matchmaker 
  * Heather Chester 
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * As per the season, this simulation is a take on the typical matchmaking Valentines festivities 
+ * while simultaneously adressing the current climate for service workers and students in Quebec 
+ * who are cureently being subject to either unlivable wages or threatened tuition hikes. 
  */
 
 "use strict";

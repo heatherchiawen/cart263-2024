@@ -3,7 +3,13 @@
 # Voice Jam - Predetermined Matchmaker 
 ## Heather Chester 
 
-As per the season, this simulation is a take on the typical matchmaking Valentines festivities. Adressing the current climate for service workers and students in Quebec who are cureently being subject to either unlivable wages or threatened tuition hikes. As there have been a rise in protests these past few months, I thought it might be fitting to indluge my frustration, as a out-of-province student, in the smear of those who are ultimately reponsible. 
+As per the season, this simulation is a take on the typical matchmaking Valentines festivities while simultaneously adressing the current climate for service workers and students in Quebec who are cureently being subject to either unlivable wages or threatened tuition hikes. 
+
+The main components of my simulation included; title, simulation, and ending states, arrays, mousePressed and keyPressed functions, as well as utilizing the speech recognition and voice function of the p5 Speech Library. 
+
+I looked at several examples for building up this project, and referenced the ones that were the most helpful/code that was borrowed. Additionally, I refernced past projects to refresh some of the coding knowledge in order to build some of the more aesthetic elements. While the appearance is simnple, it is meant to mimic that of an outdated video game, with pexelated font and images, and the default voice. 
+
+Furthermore, I opted to not include a timer between questions since the program seemed to operate effectively in rooms that are dead silent. 
 
 Font cited: 
 
