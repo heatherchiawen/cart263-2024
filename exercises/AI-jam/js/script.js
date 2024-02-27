@@ -44,11 +44,17 @@ function setup() {
 
 }
 
+// function handleResults(err, results) { // function for if hands are detected 
+
+// }
+
 
 /**
  * Description of draw()
 */
 function draw() {
     background(0); 
+
+    image(video, 0, 0, width, height); 
 
 }
