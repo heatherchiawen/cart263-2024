@@ -16,6 +16,12 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
+let soundMaker = {
+    sound: [], 
+    numSound: 10, 
+    soundNote: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
+}
+
 function preload() {
 
 }
@@ -41,12 +47,24 @@ function setup() {
         predictions = results;  
     });
 
-
+    // For setting up Sounds class 
+    for (let i = 0; i < soundMaker.numSound; i++) {
+        let x = 640; 
+        let y = 480; 
+        let sounds = new Sounds(x, y); 
+        let soundNote = soundMaker.soundNote[i]; 
+        sounds.oscillator.freq(midiToFreq(soundNote)); 
+        soundMaker.sound.push(sounds);  
+    }
 }
 
-// function handleResults(err, results) { // function for if hands are detected 
-
-// }
+function handleResults(err, results) { // function for if hands are detected 
+    // If hand is detected, sounds.soundsOn() will play sound 
+    for (let i = 0; i < soundMaker.sound.length; i++) {
+        let sounds = soundMaker.sound[i]; 
+        sounds.soundsOn(); 
+    }
+}
 
 
 /**
