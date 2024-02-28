@@ -16,10 +16,14 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
+let hand; // For storing hand values in order to detect where it is on the canvas 
+// Use dist and sounds[i] to measure the dist between the hand and the next notes 
+
 let soundMaker = {
     sound: [], 
     numSound: 7, 
-    soundNote: [60, 62, 64, 65, 67, 69, 71]
+    soundNote: [60, 62, 64, 65, 67, 69, 71], 
+    soundXCoordinates: [0, 91, 182, 274, 365, 457, 548]
 }
 
 let state = `loading`; // Initial loading state 
@@ -54,7 +58,7 @@ function setup() {
 
     // For setting up Sounds class 
     for (let i = 0; i < soundMaker.numSound; i++) {
-        let x = width; 
+        let x = soundMaker.soundXCoordinates[i];
         let y = height; 
         let sounds = new Sounds(x, y); 
         let note = soundMaker.soundNote[i]; 
@@ -91,17 +95,31 @@ function simulation() {
     const flippedVideo = ml5.flipImage(video);
     image(flippedVideo, 0, 0, width, height); 
 
-    // Check for new predeictions 
+    // Check for new predictions 
     if (predictions.length > 0) {
         let results = predictions[0]; 
-        handleResults(results); 
+        handleResults(results);
+    }
+
+    for (let i = 0; i < soundMaker.sound.length; i++) {
+        let sounds = soundMaker.sound[i]; 
+        sounds.display(); 
+        
+    //     let baseX = base[0];
+    //     if (baseX > soundMaker.soundXCoordinates[i]) {
+    //         sounds.soundsOn(); 
+    //     }
     }
 }
 
-function handleResults(results) { 
+function handleResults(results) { // Maybe do a function that checks the certainty of detection in the program?? in OPTIONS of a program 
     // If hand is detected, sounds.soundsOn() will play sound  
     for (let i = 0; i < soundMaker.sound.length; i++) {
         let sounds = soundMaker.sound[i]; 
         sounds.soundsOn(); 
+
+    // For storing hand values in order to detect where it is on the canvas 
+    // Use dist and sounds[i] to measure the dist between the hand and the next notes 
+
     }
 }
