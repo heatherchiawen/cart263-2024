@@ -16,6 +16,8 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
+let hands = [];
+
 let soundMaker = {
     sound: [], 
     numSound: 7, 
@@ -50,6 +52,7 @@ function preload() {
 */
 function setup() {
     createCanvas(640, 480); 
+    userStartAudio(); // Starts audio in the program 
 
     video = createCapture(VIDEO); 
     video.hide(); 
@@ -66,15 +69,20 @@ function setup() {
         predictions = results;  
     });
 
-    // // For setting up Sounds class 
-    // for (let i = 0; i < soundMaker.numSound; i++) {
-    //     let x = width; 
-    //     let y = height; 
-    //     let sounds = new Sounds(x, y); 
-    //     let note = soundMaker.soundNote[i]; 
-    //     sounds.oscillator.freq(midiToFreq(note)); 
-    //     soundMaker.sound.push(sounds);  
-    // }
+    // handpose.on("hand", results => {
+    //     console.log(results); 
+    //     predictions = results;  
+    // });
+
+    // For setting up Sounds class 
+    for (let i = 0; i < soundMaker.numSound; i++) {
+        let x = width; 
+        let y = height; 
+        let sounds = new Sounds(x, y); 
+        let note = soundMaker.soundNote[i]; 
+        sounds.oscillator.freq(midiToFreq(note)); 
+        soundMaker.sound.push(sounds);  
+    }
 }
 
 /**
@@ -106,10 +114,23 @@ function simulation() {
     image(flippedVideo, 0, 0, width, height); 
 
     // Check for new predeictions 
-    // if (predictions.length > 0) {
-        // updateHandData(); 
-        // handleResults(); // For sounds???
-    // }
+    if (predictions.length > 0) {
+        // let hand = predictions[0]; 
+        // highlightHand(hand); 
+        let results = predictions[0]; 
+        handleResults(results); 
+    }
+}
+
+function highlightHand(hand) {
+    let index = hand.annotations.indexFinger[3]; 
+    let indexX = index[0]; 
+    let indexY = index[1];
+
+    push(); 
+    fill(255, 255, 0); 
+    ellipse(indexX, indexY, 50); 
+    pop(); 
 }
 
 function updateHandData() {
@@ -126,13 +147,12 @@ function updateHandData() {
     handPosition.indexTip.y = annotations.indexFinger[3][1];  
 }
 
-function handleResults() { // function for if hands are detected 
-    // err, results ,,, add this inside function brackets?? 
-}
+function handleResults(results) { // function for if hands are detected 
+    // have function for handling sounds seprate from the results?? 
 
-// have function for handling sounds seprate from the results?? 
-    // // If hand is detected, sounds.soundsOn() will play sound  
-    // for (let i = 0; i < soundMaker.sound.length; i++) {
-    //     let sounds = soundMaker.sound[i]; 
-    //     sounds.soundsOn(); 
-    // }
+    // If hand is detected, sounds.soundsOn() will play sound  
+    for (let i = 0; i < soundMaker.sound.length; i++) {
+        let sounds = soundMaker.sound[i]; 
+        sounds.soundsOn(); 
+    }
+}
