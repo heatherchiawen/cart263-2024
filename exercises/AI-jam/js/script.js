@@ -18,8 +18,26 @@ let predictions = [];
 
 let soundMaker = {
     sound: [], 
-    numSound: 10, 
-    soundNote: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]
+    numSound: 7, 
+    soundNote: [60, 62, 64, 65, 67, 69, 71]
+}
+
+let state = `loading`; // Initial loading state 
+let modelName = `Handpose`; 
+
+let handPositions = { // Change later... 
+    thumbTip: {
+        x: undefined,
+        t: undefined
+    },
+    indexTip: {
+        x: undefined,
+        y: undefined
+    }, 
+    indexBase: {
+        x: undefined,
+        y: undefined
+    } 
 }
 
 function preload() {
@@ -40,6 +58,7 @@ function setup() {
         fliphorizontal: true 
     }, function() {
         console.log(`Model loaded.`); 
+        state = `simulation`; 
     }); 
 
     handpose.on(`predict`, function(results) {
@@ -47,32 +66,73 @@ function setup() {
         predictions = results;  
     });
 
-    // For setting up Sounds class 
-    for (let i = 0; i < soundMaker.numSound; i++) {
-        let x = 640; 
-        let y = 480; 
-        let sounds = new Sounds(x, y); 
-        let soundNote = soundMaker.soundNote[i]; 
-        sounds.oscillator.freq(midiToFreq(soundNote)); 
-        soundMaker.sound.push(sounds);  
-    }
+    // // For setting up Sounds class 
+    // for (let i = 0; i < soundMaker.numSound; i++) {
+    //     let x = width; 
+    //     let y = height; 
+    //     let sounds = new Sounds(x, y); 
+    //     let note = soundMaker.soundNote[i]; 
+    //     sounds.oscillator.freq(midiToFreq(note)); 
+    //     soundMaker.sound.push(sounds);  
+    // }
 }
-
-function handleResults(err, results) { // function for if hands are detected 
-    // If hand is detected, sounds.soundsOn() will play sound 
-    for (let i = 0; i < soundMaker.sound.length; i++) {
-        let sounds = soundMaker.sound[i]; 
-        sounds.soundsOn(); 
-    }
-}
-
 
 /**
  * Description of draw()
 */
 function draw() {
-    background(0); 
-
-    image(video, 0, 0, width, height); 
-
+    if (state === `loading`) {
+        loading(); 
+    }
+    else if (state === `simulation`) {
+        simulation(); 
+    }
 }
+
+function loading() {
+    background(255); 
+
+    push(); 
+    textSize(32); 
+    textStyle(BOLD); 
+    textAlign(CENTER, CENTER); 
+    text(`Loading ${modelName}...`, width/2, height/2); 
+    pop(); 
+}
+
+function simulation() {
+    // User webcam display 
+    const flippedVideo = ml5.flipImage(video);
+    image(flippedVideo, 0, 0, width, height); 
+
+    // Check for new predeictions 
+    // if (predictions.length > 0) {
+        // updateHandData(); 
+        // handleResults(); // For sounds???
+    // }
+}
+
+function updateHandData() {
+    // Get the annptated data in the predictions 
+    const annotations = predictions[0].annotations; 
+
+    // Store the relevant positions of the thumb and index finger 
+    // Chnage to reflect the functions of this program 
+    handPosition.thumbTip.x = annotations.thumb[3][0]; 
+    handPosition.thumbTip.y = annotations.thumb[3][1]; 
+    handPosition.indexBase.x = annotations.indexFinger[0][0];
+    handPosition.indexBase.y = annotations.indexFinger[0][1]; 
+    handPosition.indexTip.x = annotations.indexFinger[3][0]; 
+    handPosition.indexTip.y = annotations.indexFinger[3][1];  
+}
+
+function handleResults() { // function for if hands are detected 
+    // err, results ,,, add this inside function brackets?? 
+}
+
+// have function for handling sounds seprate from the results?? 
+    // // If hand is detected, sounds.soundsOn() will play sound  
+    // for (let i = 0; i < soundMaker.sound.length; i++) {
+    //     let sounds = soundMaker.sound[i]; 
+    //     sounds.soundsOn(); 
+    // }
