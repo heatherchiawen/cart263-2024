@@ -1,5 +1,5 @@
 /**
- * Title of Project
+ * AI Jam - 
  * Heather Chester 
  * 
  * This is a template. You must fill in the title, author, 
@@ -12,14 +12,18 @@
  * Description of preload
 */
 
+// Handpose variables/ properties
 let video = undefined; 
 let handpose = undefined; 
 let predictions = []; 
+let modelName = `Handpose`; 
 
+// Sound variables 
 let synth; 
+let reverb; 
+// let reverbAmt = 0.5; 
 
 let state = `loading`; // Initial loading state 
-let modelName = `Handpose`; 
 
 function preload() {
 
@@ -50,11 +54,14 @@ function setup() {
         predictions = results;  
     });
 
-    // Set up sounds 
+    // Setup sounds 
     synth = new p5.Oscillator(); 
     synth.setType(`sine`); 
     synth.amp(0); 
     synth.start(); 
+    reverb = new p5.Reverb(); 
+    synth.connect(reverb); 
+    // reverb.amp(0.5); 
 }
 
 /**
@@ -81,7 +88,6 @@ function loading() {
 }
 
 function simulation() {
-
     // User webcam display 
     const flippedVideo = ml5.flipImage(video);
     image(flippedVideo, 0, 0, width, height); 
@@ -94,15 +100,24 @@ function handleResults() {
     if (predictions.length > 0) {   
     const annotations = predictions[0].annotations; 
 
+    // Positions of thumb and wrist 
     let thumb = annotations.thumb[3]; 
+    let wrist = annotations.wrist[0]; 
 
-    let pitch = map(thumb[1], 0, 480, 60, 72); 
-    let volume = map(thumb[0], 0, 640, 0, 1); 
-
+    // Maps frequency and volume based on wrist coorindates 
+    let pitch = map(thumb[1], 0, width, 71, 48); // Midi notes, in opposite order 
+    let volume = map(thumb[0], 0, height, 1, 0); 
+    // Setting synth to maps 
     synth.freq(midiToFreq(pitch)); 
     synth.amp(volume); 
 
+    // Reverb based on wrist coordinates 
+    let reverbAmount = map(wrist[2], -100, 100, 0, 1); 
+
+    reverb.amp(reverbAmount); 
+
     } else {
         synth.amp(0); 
+        reverb.amp(0); 
     }
 }
