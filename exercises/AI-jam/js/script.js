@@ -107,6 +107,5 @@ function handleResults() {
     } 
     else {
         synth.amp(0); 
-        reverb.amp(0); 
     }
 }
