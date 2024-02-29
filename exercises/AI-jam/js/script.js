@@ -16,22 +16,13 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
-let hand = {
-    palm: {
-        x: undefined, 
-        y: undefined 
-    }
-}
-
-// For storing hand values in order to detect where it is on the canvas 
-// // Use dist and sounds[i] to measure the dist between the hand and the next notes 
+let hand; 
+let synth; 
 
 let soundMaker = {
     sound: [], 
-    numSound: 7, 
-    soundNote: [60], // , 62, 64, 65, 67, 69, 71
-    x: [0, 91, 182, 274, 365, 457, 548], 
-    y: [0, 480]
+    numSound: 5, 
+    soundNote: [60, 62, 64, 65, 67]  // 69, 71
 }
 
 let state = `loading`; // Initial loading state 
@@ -49,31 +40,38 @@ function setup() {
     createCanvas(640, 480); 
     userStartAudio(); // Starts audio in the program 
 
+    // User video 
     video = createCapture(VIDEO); 
     video.hide(); 
 
+    // Ml5 setup 
     handpose = ml5.handpose(video, {
         fliphorizontal: true 
     }, function() {
         console.log(`Model loaded.`); 
         state = `simulation`; 
     }); 
-
+    // Listens to presdictions 
     handpose.on(`predict`, function(results) {
         console.log(results); 
         predictions = results;  
     });
 
-    // For setting up Sounds class 
-    for (let i = 0; i < soundMaker.numSound; i++) {
-        let x = soundMaker.x[i];
-        let y = 0; 
-        let sounds = new Sounds(x, y); 
+    // // For setting up Sounds class 
+    // for (let i = 0; i < soundMaker.numSound; i++) {
+    //     let x = 0;
+    //     let y = 0; 
+    //     let sounds = new Sounds(x, y); 
+    //     let note = soundMaker.soundNote[i]; 
+    //     sounds.oscillator.freq(midiToFreq(note)); 
+    //     soundMaker.sound.push(sounds);  
+    // }
 
-        let note = soundMaker.soundNote[i]; 
-        sounds.oscillator.freq(midiToFreq(note)); 
-        soundMaker.sound.push(sounds);  
-    }
+    // Set up sounds 
+    synth = new p5.Oscillator(); 
+    synth.setType(`sine`); 
+    synth.amp(0); 
+    synth.start(); 
 }
 
 /**
@@ -105,38 +103,37 @@ function simulation() {
     image(flippedVideo, 0, 0, width, height); 
 
     // Check for new predictions 
-    if (predictions.length > 0) {
-        // let hand = predictions[0]; 
         updateData(); 
-        handleHandResults();
-    }
-
-    for (let i = 0; i < soundMaker.sound.length; i++) {
-        let sounds = soundMaker.sound[i]; 
-        sounds.display(); 
-    }
+        // handleHandResults();
 }
 
 function updateData() {
     // Annotated data in the predictions 
+    // const annotations = predictions[0].annotations; 
+
+    if (predictions.length > 0) {
+   
     const annotations = predictions[0].annotations; 
 
-    // Relevant positions of the palm 
-    hand.palm.x = annotations.palmBase[0]; 
-    hand.palm.y = annotations.palmBase[0];
+    let thumb = annotations.thumb[3]; 
+    // let wrist = annotations.wrist[0]; 
+
+    let pitch = map(thumb[1], 0, 480, 60, 72); 
+    let volume = map(thumb[0], 0, 640, 0, 1); 
+
+    synth.freq(midiToFreq(pitch)); 
+    synth.amp(volume); 
+
+    } else {
+        synth.amp(0); 
+    }
 }
 
-function handleHandResults() { // Maybe do a function that checks the certainty of detection in the program?? in OPTIONS of a program 
+function handleHandResults() { // Maybe do a function that checks the certainty of detection in the program?? in OPTIONS of a program
 
-    // maps volume on a scale of 0-1 along the length of the canvas 
-    // let volume = map(hand.palm.x, 0, 640, 0, 1); 
-    let pitch = map(hand.palm.y, 0, 480, 0, 1); 
-
-    for (let i = 0; i < soundMaker.sound.length; i++) {
-       let sounds = soundMaker.sound[i]; 
-
-    //    sounds.oscillator.freq(pitch);
-    //    sounds.oscillator.setVolume(volume);
-       sounds.soundsOn(); 
-    }
+    // for (let i = 0; i < soundMaker.sound.length; i++) {
+    //    let sounds = soundMaker.sound[i]; 
+    
+    //    sounds.soundsOn(); 
+    // }
 }
