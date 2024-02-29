@@ -16,14 +16,7 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
-let hand; 
 let synth; 
-
-let soundMaker = {
-    sound: [], 
-    numSound: 5, 
-    soundNote: [60, 62, 64, 65, 67]  // 69, 71
-}
 
 let state = `loading`; // Initial loading state 
 let modelName = `Handpose`; 
@@ -57,16 +50,6 @@ function setup() {
         predictions = results;  
     });
 
-    // // For setting up Sounds class 
-    // for (let i = 0; i < soundMaker.numSound; i++) {
-    //     let x = 0;
-    //     let y = 0; 
-    //     let sounds = new Sounds(x, y); 
-    //     let note = soundMaker.soundNote[i]; 
-    //     sounds.oscillator.freq(midiToFreq(note)); 
-    //     soundMaker.sound.push(sounds);  
-    // }
-
     // Set up sounds 
     synth = new p5.Oscillator(); 
     synth.setType(`sine`); 
@@ -98,25 +81,20 @@ function loading() {
 }
 
 function simulation() {
+
     // User webcam display 
     const flippedVideo = ml5.flipImage(video);
     image(flippedVideo, 0, 0, width, height); 
 
     // Check for new predictions 
-        updateData(); 
-        // handleHandResults();
+    handleResults(); 
 }
 
-function updateData() {
-    // Annotated data in the predictions 
-    // const annotations = predictions[0].annotations; 
-
-    if (predictions.length > 0) {
-   
+function handleResults() {
+    if (predictions.length > 0) {   
     const annotations = predictions[0].annotations; 
 
     let thumb = annotations.thumb[3]; 
-    // let wrist = annotations.wrist[0]; 
 
     let pitch = map(thumb[1], 0, 480, 60, 72); 
     let volume = map(thumb[0], 0, 640, 0, 1); 
@@ -127,13 +105,4 @@ function updateData() {
     } else {
         synth.amp(0); 
     }
-}
-
-function handleHandResults() { // Maybe do a function that checks the certainty of detection in the program?? in OPTIONS of a program
-
-    // for (let i = 0; i < soundMaker.sound.length; i++) {
-    //    let sounds = soundMaker.sound[i]; 
-    
-    //    sounds.soundsOn(); 
-    // }
 }
