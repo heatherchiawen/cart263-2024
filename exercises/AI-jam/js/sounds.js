@@ -2,6 +2,8 @@ class Sounds {
     constructor(x, y) {
         this.x = x; 
         this.y = y; 
+        this.w = 91;
+        this.h = 480;  
 
         // Oscillator 
         this.oscillator = new p5.Oscillator(`sine`);
@@ -21,8 +23,8 @@ class Sounds {
 
     display() {
         push(); 
-        fill(255, 0, 0); 
-        line(this.x, 0, this.x, this.y); 
+        noFill(); 
+        rect(this.x, this.y, this.w, this.h); 
         pop(); 
     }
 }
