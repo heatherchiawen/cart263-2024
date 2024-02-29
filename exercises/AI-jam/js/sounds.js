@@ -18,6 +18,10 @@ class Sounds {
     soundsOn() {
         // Checks to see if hands are detected in the main program 
         // Play sound
+
+        // this.oscillator.freq(pitch);
+        // this.oscillator.amp(volume);
+        
         this.env.play(); 
     }
 

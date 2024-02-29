@@ -16,13 +16,7 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 
-const MIN_SOUND_DIST = 80; 
-
 let hand = {
-    indexTip: {
-        x: undefined, 
-        y: undefined
-    },
     palm: {
         x: undefined, 
         y: undefined 
@@ -35,12 +29,10 @@ let hand = {
 let soundMaker = {
     sound: [], 
     numSound: 7, 
-    soundNote: [60, 62, 64, 65, 67, 69, 71], 
+    soundNote: [60], // , 62, 64, 65, 67, 69, 71
     x: [0, 91, 182, 274, 365, 457, 548], 
     y: [0, 480]
 }
-
-let soundPlay = true; 
 
 let state = `loading`; // Initial loading state 
 let modelName = `Handpose`; 
@@ -77,6 +69,7 @@ function setup() {
         let x = soundMaker.x[i];
         let y = 0; 
         let sounds = new Sounds(x, y); 
+
         let note = soundMaker.soundNote[i]; 
         sounds.oscillator.freq(midiToFreq(note)); 
         soundMaker.sound.push(sounds);  
@@ -131,37 +124,19 @@ function updateData() {
     // Relevant positions of the palm 
     hand.palm.x = annotations.palmBase[0]; 
     hand.palm.y = annotations.palmBase[0];
-    hand.indexTip.x = annotations.indexFinger[3][0]; 
-    hand.indexTip.y = annotations.indexFinger[3][1];  
 }
 
 function handleHandResults() { // Maybe do a function that checks the certainty of detection in the program?? in OPTIONS of a program 
 
-    let palmToIndexTipDist = dist(hand.indexTip.x, hand.indexTip.y, hand.palm.x, hand.palm.y); 
+    // maps volume on a scale of 0-1 along the length of the canvas 
+    // let volume = map(hand.palm.x, 0, 640, 0, 1); 
+    let pitch = map(hand.palm.y, 0, 480, 0, 1); 
 
-    // If hand is detected, sounds.soundsOn() will play sound  
-    
     for (let i = 0; i < soundMaker.sound.length; i++) {
        let sounds = soundMaker.sound[i]; 
 
-        // let d = dist(hand.palm.x, hand.palm.y, soundMaker.x[i], soundMaker.y[i])       
-        // let noise = map(hand.palm.x, soundMaker.x[0], 640, 0, 480)
-
-        // (hand.palm.x > sounds.x[i]) 
-        if (!soundPlay && palmToIndexTipDist > MIN_SOUND_DIST) {
-            soundPlay = true; 
-            sounds.soundsOn(); 
-        }   
-
-    // Use dist and sounds[i] to measure the dist between the hand and the next notes 
-
-    }
-}
-
-function handleSound() {
-    let palmToIndexTipDist = dist(hand.indexTip.x, hand.indexTip.y, hand.palm.x, hand.palm.y); 
-
-    if (soundPlay && palmToIndexTipDist > MIN_SOUND_DIST) {
-        soundPlay = true; 
+    //    sounds.oscillator.freq(pitch);
+    //    sounds.oscillator.setVolume(volume);
+       sounds.soundsOn(); 
     }
 }
