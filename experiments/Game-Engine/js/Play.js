@@ -16,7 +16,7 @@ class Play extends Phaser.Scene {
             fill: '#ffffff',
         };
 
-        let gameDescription = `Thikn of a number... no that's not it.`; 
+        let gameDescription = `Think of a number... no that's not it.`; 
 
         this.gameText = this.add.text(100, 100, gameDescription, style); 
     }
