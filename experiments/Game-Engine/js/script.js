@@ -8,6 +8,8 @@ author, and this description to match your project!
 
 "use strict";
 
+// https://www.piskelapp.com/ is a website to make pixel art 
+
 // Code goes here
 
 let config = {
