@@ -9,6 +9,7 @@ author, and this description to match your project!
 "use strict";
 
 // https://www.piskelapp.com/ is a website to make pixel art 
+// DONT make giffs but instead sprite sheets 
 
 // Code goes here
 
