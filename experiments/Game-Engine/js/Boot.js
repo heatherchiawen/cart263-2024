@@ -8,7 +8,7 @@ class Boot extends Phaser.Scene {
     // preload() method tells Phaser 3 that we want to preload asset files here 
     preload() {
         // EXAMPLE: https://phaser.io/examples/v3/view/loader/image/load-image
-        this.load.image(`wall`, `assets/image/wall.png`); 
+        this.load.image(`wall`, `assets/images/wall.png`); 
         // `complete` acts as an event listener to tell the porgram to switch scenes once the asset is loaded
         // EXAMPLE: https://phaser.io/examples/v3/view/loader/loader-events/load-progress
         this.load.on(`complete`, () => {
