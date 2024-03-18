@@ -4,8 +4,15 @@ class Boot extends Phaser.Scene {
             key: `boot`
         }); 
     }
-    preload() {
 
+    preload() {
+        // Load assets here 
+        this.load.image(`avatar`, `assets/images/avatar.png`); 
+        this.load.image(`thumbs-down`, `assets/images/thumbs-down.png`); 
+
+        this.load.on(`complete`, () => {
+            this.scene.start(`play`); 
+        });
     }
 
     create() {
@@ -13,6 +20,6 @@ class Boot extends Phaser.Scene {
     }
 
     update() {
-        
+
     }
 }
