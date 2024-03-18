@@ -56,7 +56,7 @@ class Play extends Phaser.Scene {
 
         // Create an easy way to acess the arrow keys and space bat using the keyboards
         // input system's .createCursorKeys() method 
-        // EXAMPLE: https://phaser.io/examples/v3/view/input/keyboard/cursor-keys
+        
         this.cursors = this.input.keyboard.createCursorKeys(); 
     }
 
