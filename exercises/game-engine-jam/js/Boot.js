@@ -7,7 +7,7 @@ class Boot extends Phaser.Scene {
 
     preload() {
         // Load assets here 
-        // this.load.image(`avatar`, `assets/images/avatar.png`); 
+        
 
         //Sprite sheet 
         this.load.spritesheet(`avatar`, `assets/images/avatar.png`, {
