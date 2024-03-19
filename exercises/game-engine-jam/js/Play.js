@@ -7,8 +7,17 @@ class Play extends Phaser.Scene {
 
     create() {
         // Create drum 
-        this.drum = this.physics.add.sprite(100, 100, `drum`); 
-        this.drum.setImmovable(true); 
+        this.drums = this.physics.add.group({
+            key: `drum`, 
+            immovable: true, 
+            quantity: 16, 
+        }); 
+        this.drums.children.each(function(drum) {
+            let x = Phaser.Math.Between(0, this.sys.canvas.width); 
+            let y = 100;
+            // let y = Phaser.Math.Between(0, this.sys.canvas.height); 
+            drum.setPosition(x, y); 
+        }, this); 
 
         // Create avatar 
         this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
@@ -17,6 +26,7 @@ class Play extends Phaser.Scene {
         // Enable collisions 
         // this.physics.add.collider(this.avatar, this.drum); 
 
+        // Check overlap 
         this.physics.add.overlap(this.avatar, this.drum, this.playDrum, null, this); 
 
         // Call animation 
