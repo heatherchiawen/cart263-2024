@@ -7,13 +7,18 @@ class Boot extends Phaser.Scene {
 
     preload() {
         // Load assets here 
+        // Drum 
+        this.load.spritesheet(`drum`, `assets/images/drum.png`, {
+            frameWidth: 32, 
+            frameHeight: 32, 
+            endFrame: 1
+        });
         
-
-        //Sprite sheet 
+        // Avatar 
         this.load.spritesheet(`avatar`, `assets/images/avatar.png`, {
             frameWidth: 32, 
             frameHeight: 32, 
-            endFrame:3
+            endFrame: 3
         }); 
 
         // After Boot loads, triggers play 

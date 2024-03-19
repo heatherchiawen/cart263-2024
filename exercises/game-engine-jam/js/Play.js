@@ -6,14 +6,19 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
+        // Creat drum 
+        this.drum = this.physics.add.sprite(100, 100, `drum`); 
+        this.drum.setImmovable(true); 
 
-        // Tempoarily omitted for clarity
+        // Create avatar 
+        this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
+        this.avatar.setCollideWorldBounds(true); 
+
+        // Calls for animation 
         this.createAnimations(); 
 
+        // Starts avatar as still 
         this.avatar.play(`idle`); 
-        // this.avatar.setVelocityX(100); 
-        // this.avatar.play(`moving`); 
 
         // User key access
         this.cursors = this.input.keyboard.createCursorKeys(); 
