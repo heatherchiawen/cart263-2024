@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Creat drum 
+        // Create drum 
         this.drum = this.physics.add.sprite(100, 100, `drum`); 
         this.drum.setImmovable(true); 
 
@@ -14,10 +14,15 @@ class Play extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
         this.avatar.setCollideWorldBounds(true); 
 
-        // Calls for animation 
+        // Enable collisions 
+        // this.physics.add.collider(this.avatar, this.drum); 
+
+        this.physics.add.overlap(this.avatar, this.drum, this.playDrum, null, this); 
+
+        // Call animation 
         this.createAnimations(); 
 
-        // Starts avatar as still 
+        // Avatar starts in idle  
         this.avatar.play(`idle`); 
 
         // User key access
@@ -46,6 +51,10 @@ class Play extends Phaser.Scene {
             repeat: 0 
         }; 
         this.anims.create(idleAnimationConfig);
+    }
+
+    playDrum(avatar, drum) {
+        drum.destroy(); 
     }
 
     update() {
