@@ -6,16 +6,16 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Create drum 
+        // Create drum group 
         this.drums = this.physics.add.group({
             key: `drum`, 
             immovable: true, 
             quantity: 16, 
+            colliderWorldBounds: true
         }); 
         this.drums.children.each(function(drum) {
             let x = Phaser.Math.Between(0, this.sys.canvas.width); 
-            let y = 100;
-            // let y = Phaser.Math.Between(0, this.sys.canvas.height); 
+            let y = 100; 
             drum.setPosition(x, y); 
         }, this); 
 
@@ -23,23 +23,22 @@ class Play extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
         this.avatar.setCollideWorldBounds(true); 
 
-        // Enable collisions 
-        // this.physics.add.collider(this.avatar, this.drum); 
-
         // Check overlap 
-        this.physics.add.overlap(this.avatar, this.drum, this.playDrum, null, this); 
+        this.physics.add.collider(this.avatar, this.drum, this.checkAvatarJump, null, this); 
 
-        // Call animation 
-        this.createAnimations(); 
+        // Call animations 
+        this.createAvatarAnimations(); 
+        this.createDrumAnimations(); 
 
-        // Avatar starts in idle  
+        // Avatar and drum starts in idle  
         this.avatar.play(`idle`); 
+        this.drum.play(`drumIdle`); 
 
         // User key access
         this.cursors = this.input.keyboard.createCursorKeys(); 
     }
 
-    createAnimations() {
+    createAvatarAnimations() {
         // Moving the avatar 
         let movingAnimationConfig = {
             key: `moving`, 
@@ -52,6 +51,7 @@ class Play extends Phaser.Scene {
         }; 
         this.anims.create(movingAnimationConfig); 
 
+        // Idle avatar 
         let idleAnimationConfig = {
             key: `idle`, 
             frames: this.anims.generateFrameNumbers(`avatar`, {
@@ -60,11 +60,39 @@ class Play extends Phaser.Scene {
             }), 
             repeat: 0 
         }; 
-        this.anims.create(idleAnimationConfig);
+        this.anims.create(idleAnimationConfig); 
     }
 
-    playDrum(avatar, drum) {
-        drum.destroy(); 
+    createDrumAnimations() {
+        // Playing drums 
+        let drumAnimationConfig = {
+            key: `drumAnim`, 
+            frames: this.anims.generateFrameNumbers(`drum`, {
+                start: 0, 
+                end: 1
+            }), 
+            frameRate: 10, 
+            repeat: -1 
+        }
+        this.anims.create(drumAnimationConfig); 
+
+        // Idle drums 
+        let idleDrumAnimationConfig = {
+            key: `drumIdle`, 
+            frames: this.anims.generateFrameNumbers(`drum`, {
+                start: 0, 
+                end: 0
+            }), 
+            repeat: 0
+        }
+        this.anims.create(idleDrumAnimationConfig); 
+    }
+
+    checkAvatarJump(avatar, drum) {
+        if (avatar.body.bottom < drum.body.top + 5) {
+            console.log(`Avatar jumped on drum`); 
+            // drum.anims.play(`drumAnim`, true); 
+        }
     }
 
     update() {
@@ -95,7 +123,6 @@ class Play extends Phaser.Scene {
         }
 
         // Check if avatar is moving or idle 
-
         if (this.avatar.body.velocity.x !== 0 || this.avatar.body.velocity.y !== 0) {
             this.avatar.play(`moving`, true); 
         }
