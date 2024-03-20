@@ -6,37 +6,40 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Create drum group 
-        this.drums = this.physics.add.group({
-            key: `drum`, 
-            immovable: true, 
-            quantity: 16, 
-            colliderWorldBounds: true
-        }); 
-        this.drums.children.each(function(drum) {
-            let x = Phaser.Math.Between(50, this.sys.canvas.width - 50); 
-            let y = 300; 
-            drum.setPosition(x, y); 
-        }, this); 
+        // // Create drum group 
+        // this.drums = this.physics.add.group({
+        //     key: `drum`, 
+        //     immovable: true, 
+        //     quantity: 16, 
+        //     colliderWorldBounds: true
+        // }); 
+        // this.drums.children.each(function(drum) {
+        //     let x = Phaser.Math.Between(50, this.sys.canvas.width - 50); 
+        //     let y = 300; 
+        //     drum.setPosition(x, y); 
+        // }, this); 
 
         // Create avatar 
         this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
         this.avatar.setCollideWorldBounds(true); 
 
         // Check overlap 
-        this.physics.add.overlap(this.avatar, this.drums, this.checkAvatarJump, null, this);
+        // this.physics.add.overlap(this.avatar, this.drums, this.checkAvatarJump, null, this);
         // Add a space where the avatar cannot jump below the drum  
 
         // Call animations 
         this.createAvatarAnimations(); 
-        this.createDrumAnimations(); 
+        // this.createDrumAnimations(); 
 
         // Avatar and drum starts in idle  
         this.avatar.play(`idle`); 
-        this.drums.playAnimation(`drumIdle`); 
+        // this.drums.playAnimation(`drumIdle`); 
 
         // User key access
         this.cursors = this.input.keyboard.createCursorKeys(); 
+
+        // Event listener with mouse click 
+        this.input.on(`pointerdown`, this.addDrum, this); 
     }
 
     createAvatarAnimations() {
@@ -64,6 +67,14 @@ class Play extends Phaser.Scene {
         this.anims.create(idleAnimationConfig); 
     }
 
+    addDrum(pointer) {
+        // Drum created at mouse click position 
+        this.drum = this.physics.add.sprite(pointer.x, pointer.y, `drum`); 
+
+        // this.drum.playAnimation(`drumIdle`, true); 
+        // add collider from play()
+    }
+
     createDrumAnimations() {
         // Playing drums 
         let drumAnimationConfig = {
@@ -89,6 +100,7 @@ class Play extends Phaser.Scene {
         this.anims.create(idleDrumAnimationConfig); 
     }
 
+    // FIX ANIMATION lil wonky 
     checkAvatarJump(avatar, drum) {
         if (avatar.body.bottom < drum.body.top) {
             console.log(`Avatar jumped on drum`); 
