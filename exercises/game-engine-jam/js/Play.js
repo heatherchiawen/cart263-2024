@@ -14,17 +14,18 @@ class Play extends Phaser.Scene {
             colliderWorldBounds: true
         }); 
         this.drums.children.each(function(drum) {
-            let x = Phaser.Math.Between(0, this.sys.canvas.width); 
-            let y = 100; 
+            let x = Phaser.Math.Between(50, this.sys.canvas.width - 50); 
+            let y = 300; 
             drum.setPosition(x, y); 
         }, this); 
 
         // Create avatar 
-        this.avatar = this.physics.add.sprite(200, 200, `avatar`); 
+        this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
         this.avatar.setCollideWorldBounds(true); 
 
         // Check overlap 
-        this.physics.add.collider(this.avatar, this.drum, this.checkAvatarJump, null, this); 
+        this.physics.add.overlap(this.avatar, this.drums, this.checkAvatarJump, null, this);
+        // Add a space where the avatar cannot jump below the drum  
 
         // Call animations 
         this.createAvatarAnimations(); 
@@ -32,7 +33,7 @@ class Play extends Phaser.Scene {
 
         // Avatar and drum starts in idle  
         this.avatar.play(`idle`); 
-        this.drum.play(`drumIdle`); 
+        this.drums.playAnimation(`drumIdle`); 
 
         // User key access
         this.cursors = this.input.keyboard.createCursorKeys(); 
@@ -72,7 +73,7 @@ class Play extends Phaser.Scene {
                 end: 1
             }), 
             frameRate: 10, 
-            repeat: -1 
+            repeat: 1 
         }
         this.anims.create(drumAnimationConfig); 
 
@@ -89,9 +90,12 @@ class Play extends Phaser.Scene {
     }
 
     checkAvatarJump(avatar, drum) {
-        if (avatar.body.bottom < drum.body.top + 5) {
+        if (avatar.body.bottom < drum.body.top) {
             console.log(`Avatar jumped on drum`); 
-            // drum.anims.play(`drumAnim`, true); 
+            this.drums.playAnimation(`drumAnim`, true); 
+        }
+        else {
+            this.drums.playAnimation(`drumIdle`, true); 
         }
     }
 
