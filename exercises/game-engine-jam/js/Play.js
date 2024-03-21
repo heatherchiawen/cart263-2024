@@ -52,12 +52,15 @@ class Play extends Phaser.Scene {
     addDrum(pointer) {
         // Drum created at mouse click position 
         this.drum = this.physics.add.sprite(pointer.x, pointer.y, `drum`); 
+        this.drum.setCollideWorldBounds(true); 
+        this.drum.setImmovable(true); 
 
         // Drum starts idling 
         this.drum.play(`drumIdle`, true); 
 
         // Check overlap in avatarJump()
-        this.physics.add.overlap(this.avatar, this.drum, this.checkAvatarJump, null, this);
+        // this.physics.add.overlap(this.avatar, this.drum, this.checkAvatarJump, null, this);
+        this.physics.add.collider(this.avatar, this.drum, this.checkAvatarJump, null, this); 
         // Add a space where the avatar cannot jump below the drum  
     }
 
@@ -86,14 +89,14 @@ class Play extends Phaser.Scene {
         this.anims.create(idleDrumAnimationConfig); 
     }
 
-    checkAvatarJump() { // avatar, drum
-        // if (avatar.body.bottom < drum.body.top) {
+    checkAvatarJump() { 
+        if (this.avatar.body.position.y < this.drum.body.position.y) {
             console.log(`Avatar jumped on drum`); 
             this.drum.play(`drumAnim`, true); 
-        // }
-        // else {
-        //     this.drums.play(`drumIdle`, true); 
-        // }
+        }
+        else {
+            this.drum.play(`drumIdle`, true); 
+        }
     }
 
     update() {
