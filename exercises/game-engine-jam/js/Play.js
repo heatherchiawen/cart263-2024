@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
             key: `drumAnim`, 
             frames: this.anims.generateFrameNumbers(`drum`, {
                 start: 0, 
-                end: 1
+                end: 2
             }), 
             frameRate: 10, 
             repeat: 1 
