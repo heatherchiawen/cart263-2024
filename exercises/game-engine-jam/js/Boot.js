@@ -6,17 +6,20 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
-        // Load assets here 
-
         // Clef and ground 
         this.load.image(`clef`, `assets/images/clef.png`); 
-        this.load.image(`ground`, `assets/images/ground.png`);  
+        // this.load.image(`ground`, `assets/images/ground.png`);  
+        this.load.spritesheet(`ground`, `assets/images/ground.png`, {
+            frameWidth: 32, 
+            frameHeight: 32, 
+            endFrame: 0
+        }); 
 
         // Drum 
         this.load.spritesheet(`drum`, `assets/images/drum.png`, {
             frameWidth: 32, 
             frameHeight: 32, 
-            endFrame: 1
+            endFrame: 2
         });
         
         // Avatar 

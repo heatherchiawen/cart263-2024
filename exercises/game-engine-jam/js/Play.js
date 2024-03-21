@@ -6,10 +6,22 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Clef and ground 
-        this.clef = this.add.sprite(100, 100, `clef`); 
-        this.ground = this.add.sprite(100, 100, `ground`); 
-        
+        // Clef 
+        this.clef = this.add.sprite(50, this.sys.canvas.height/2, `clef`); 
+
+        // Ground 
+        // this.ground = this.add.sprite(0, this.sys.canvas.height/2, `ground`); 
+        // this.ground = this.physics.add.group({
+        //     key: `drum`,
+        //     immovable: true, 
+        //     quantity: 25 
+        // }); 
+        // this.grounds.children.each(function(ground) {
+        //     let x = 0*32; 
+        //     let y = this.sys.canvas.height/2; 
+        //     ground.setPosition(x, y); 
+        // }, this); 
+
         // Create avatar 
         this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
         this.avatar.setCollideWorldBounds(true);
