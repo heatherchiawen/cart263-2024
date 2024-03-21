@@ -6,6 +6,9 @@ class Boot extends Phaser.Scene {
     }
 
     preload() {
+        // Sounds 
+        this.load.audio(`drumBeat`, `assets/sounds/drumBeat.wav`); 
+        
         // Clef and ground 
         this.load.image(`clef`, `assets/images/clef.png`); 
         this.load.image(`ground`, `assets/images/ground.png`);  

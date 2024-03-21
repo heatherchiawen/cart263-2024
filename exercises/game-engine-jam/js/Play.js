@@ -6,6 +6,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // Sounds 
+        this.drumBeat = this.sound.add(`drumBeat`, {loop: false}); 
+
         // Clef 
         this.clef = this.add.sprite(10, this.sys.canvas.height/2, `clef`); 
 
@@ -114,13 +117,18 @@ class Play extends Phaser.Scene {
     }
 
     checkAvatarJump() { 
-        if (this.avatar.body.position.y < this.drum.body.position.y) {
-            console.log(`Avatar jumped on drum`); 
-            this.drum.play(`drumAnim`, true); 
-        }
-        else {
-            this.drum.play(`drumIdle`, true); 
-        }
+        // console.log(this.avatar.body.position.y); 
+        // console.log(this.drum.body.position.y); 
+
+        // if (this.avatar.body.position.y < this.drum.body.position.y) {
+        //     console.log(`Avatar jumped on drum`); 
+            // this.drum.play(`drumAnim`, true); 
+            this.sound.play(`drumBeat`); 
+            this.drum.destroy(); 
+        // }
+        // else {
+        //     this.drum.play(`drumIdle`, true); 
+        // }
     }
 
     update() {
