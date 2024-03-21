@@ -16,7 +16,9 @@ class Play extends Phaser.Scene {
         this.avatar = this.physics.add.sprite(0, this.sys.canvas.height/2 - 50, `avatar`); 
         this.avatar.setCollideWorldBounds(true);
         // this.avatar.setDisplaySize(150, 150);  // TO MAKE BIGGER 
-        this.avatar.setGravityY(100); 
+        this.avatar.setGravityY(300); 
+
+        this.physics.add.collider(this.avatar, this.groundGroup); 
 
         // Load animations 
         this.createAvatarAnimations(); 
@@ -45,20 +47,6 @@ class Play extends Phaser.Scene {
             let y = this.sys.canvas.height/2; 
             ground.setPosition(x, y); 
         }, this); 
-
-        this.physics.add.collider(this.avatar, this.groundGroup); 
-
-        // // this.physics.add.collider(this.avatar, this.groundGroup); 
-        // this.groundTiles = []; 
-        // let numTiles = Math.floor(this.sys.canvas.width/32); 
-
-        // for (let i = 0; i < numTiles; i++) {
-        //     this.ground = this.physics.add.sprite(i * 32, this.sys.canvas.height/2, `ground`); 
-        // }
-    }
-
-    groundCheck() {
-        console.log(`on the ground`); 
     }
 
     createAvatarAnimations() {
@@ -151,16 +139,10 @@ class Play extends Phaser.Scene {
             this.avatar.setVelocityX(0); 
         }
 
-        // // Avatar Y velocity 
-        // if (this.cursors.up.isDown) {
-        //     this.avatar.setVelocityY(-100); 
-        // }
-        // else if (this.cursors.down.isDown) {
-        //     this.avatar.setVelocityY(100); 
-        // }
-        // else {
-        //     this.avatar.setVelocityY(0); 
-        // }
+        // Avatar Y velocity 
+        if (this.cursors.up.isDown) {
+            this.avatar.setVelocityY(-100); 
+        }
 
         // Check if avatar is moving or idle 
         if (this.avatar.body.velocity.x !== 0 || this.avatar.body.velocity.y !== 0) {
