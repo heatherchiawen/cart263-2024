@@ -7,16 +7,16 @@ class Play extends Phaser.Scene {
 
     create() {
         // Clef 
-        this.clef = this.add.sprite(50, this.sys.canvas.height/2, `clef`); 
+        this.clef = this.add.sprite(10, this.sys.canvas.height/2, `clef`); 
 
         // Ground 
-        // this.ground = this.add.sprite(0, this.sys.canvas.height/2, `ground`); 
         this.createGround(); 
 
         // Create avatar 
-        this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
+        this.avatar = this.physics.add.sprite(0, this.sys.canvas.height/2 - 50, `avatar`); 
         this.avatar.setCollideWorldBounds(true);
         // this.avatar.setDisplaySize(150, 150);  // TO MAKE BIGGER 
+        this.avatar.setGravityY(100); 
 
         // Load animations 
         this.createAvatarAnimations(); 
@@ -33,12 +33,32 @@ class Play extends Phaser.Scene {
     }
 
     createGround() {
-        this.groundTiles = []; 
-        let numTiles = Math.floor(this.sys.canvas.width/32); 
+        let numTiles = Math.floor(this.sys.canvas.width/32);  
+        this.groundGroup = this.physics.add.group({
+            key: `ground`, 
+            immovable: true, 
+            quantity: numTiles 
+        }); 
+        let x = 0; 
+        this.groundGroup.children.each(function(ground) {
+            x += 32;  
+            let y = this.sys.canvas.height/2; 
+            ground.setPosition(x, y); 
+        }, this); 
 
-        for (let i = 0; i < numTiles; i++) {
-            this.ground = this.add.sprite(i * 32, this.sys.canvas.height/2, `ground`); 
-        }
+        this.physics.add.collider(this.avatar, this.groundGroup); 
+
+        // // this.physics.add.collider(this.avatar, this.groundGroup); 
+        // this.groundTiles = []; 
+        // let numTiles = Math.floor(this.sys.canvas.width/32); 
+
+        // for (let i = 0; i < numTiles; i++) {
+        //     this.ground = this.physics.add.sprite(i * 32, this.sys.canvas.height/2, `ground`); 
+        // }
+    }
+
+    groundCheck() {
+        console.log(`on the ground`); 
     }
 
     createAvatarAnimations() {
@@ -77,9 +97,7 @@ class Play extends Phaser.Scene {
         this.drum.play(`drumIdle`, true); 
 
         // Check overlap in avatarJump()
-        // this.physics.add.overlap(this.avatar, this.drum, this.checkAvatarJump, null, this);
         this.physics.add.collider(this.avatar, this.drum, this.checkAvatarJump, null, this); 
-        // Add a space where the avatar cannot jump below the drum  
     }
 
     createDrumAnimations() {
@@ -133,16 +151,16 @@ class Play extends Phaser.Scene {
             this.avatar.setVelocityX(0); 
         }
 
-        // Avatar Y velocity 
-        if (this.cursors.up.isDown) {
-            this.avatar.setVelocityY(-100); 
-        }
-        else if (this.cursors.down.isDown) {
-            this.avatar.setVelocityY(100); 
-        }
-        else {
-            this.avatar.setVelocityY(0); 
-        }
+        // // Avatar Y velocity 
+        // if (this.cursors.up.isDown) {
+        //     this.avatar.setVelocityY(-100); 
+        // }
+        // else if (this.cursors.down.isDown) {
+        //     this.avatar.setVelocityY(100); 
+        // }
+        // else {
+        //     this.avatar.setVelocityY(0); 
+        // }
 
         // Check if avatar is moving or idle 
         if (this.avatar.body.velocity.x !== 0 || this.avatar.body.velocity.y !== 0) {
