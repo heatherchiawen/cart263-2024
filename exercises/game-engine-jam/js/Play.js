@@ -22,7 +22,7 @@ class Play extends Phaser.Scene {
         this.avatar.setGravityY(300); 
 
         this.physics.add.collider(this.avatar, this.groundGroup); 
-
+        
         // Load animations 
         this.createAvatarAnimations(); 
         this.createDrumAnimations(); 
@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         // User key access
         this.cursors = this.input.keyboard.createCursorKeys(); 
 
-        // Event listener with mouse click adds drums with addDrum()
+        // // Event listener with mouse click adds drums with addDrum()
         this.input.on(`pointerdown`, this.addDrum, this); 
     }
 
@@ -82,7 +82,7 @@ class Play extends Phaser.Scene {
         this.drum = this.physics.add.sprite(pointer.x, pointer.y, `drum`); 
         this.drum.setCollideWorldBounds(true); 
         this.drum.setImmovable(true); 
-        // this.drum.setDepth(this.avatar.depth - 1); 
+        // this.drum.setDepth(this.avatar.depth - 1);
 
         // Drum starts idling 
         this.drum.play(`drumIdle`, true); 
@@ -116,19 +116,9 @@ class Play extends Phaser.Scene {
         this.anims.create(idleDrumAnimationConfig); 
     }
 
-    checkAvatarJump() { 
-        // console.log(this.avatar.body.position.y); 
-        // console.log(this.drum.body.position.y); 
-
-        // if (this.avatar.body.position.y < this.drum.body.position.y) {
-        //     console.log(`Avatar jumped on drum`); 
-            // this.drum.play(`drumAnim`, true); 
-            this.sound.play(`drumBeat`); 
-            this.drum.destroy(); 
-        // }
-        // else {
-        //     this.drum.play(`drumIdle`, true); 
-        // }
+    checkAvatarJump(avatar, item) { 
+        this.sound.play(`drumBeat`); 
+        item.destroy(); 
     }
 
     update() {
