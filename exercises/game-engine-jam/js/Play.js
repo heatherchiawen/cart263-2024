@@ -8,7 +8,8 @@ class Play extends Phaser.Scene {
     create() {
         // Create avatar 
         this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
-        this.avatar.setCollideWorldBounds(true); 
+        this.avatar.setCollideWorldBounds(true);
+        // this.avatar.setDisplaySize(150, 150);  // TO MAKE BIGGER 
 
         // Load animations 
         this.createAvatarAnimations(); 
@@ -54,6 +55,7 @@ class Play extends Phaser.Scene {
         this.drum = this.physics.add.sprite(pointer.x, pointer.y, `drum`); 
         this.drum.setCollideWorldBounds(true); 
         this.drum.setImmovable(true); 
+        // this.drum.setDepth(this.avatar.depth - 1); 
 
         // Drum starts idling 
         this.drum.play(`drumIdle`, true); 
