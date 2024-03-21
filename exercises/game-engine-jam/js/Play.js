@@ -11,16 +11,7 @@ class Play extends Phaser.Scene {
 
         // Ground 
         // this.ground = this.add.sprite(0, this.sys.canvas.height/2, `ground`); 
-        // this.ground = this.physics.add.group({
-        //     key: `drum`,
-        //     immovable: true, 
-        //     quantity: 25 
-        // }); 
-        // this.grounds.children.each(function(ground) {
-        //     let x = 0*32; 
-        //     let y = this.sys.canvas.height/2; 
-        //     ground.setPosition(x, y); 
-        // }, this); 
+        this.createGround(); 
 
         // Create avatar 
         this.avatar = this.physics.add.sprite(0, 300, `avatar`); 
@@ -39,6 +30,15 @@ class Play extends Phaser.Scene {
 
         // Event listener with mouse click adds drums with addDrum()
         this.input.on(`pointerdown`, this.addDrum, this); 
+    }
+
+    createGround() {
+        this.groundTiles = []; 
+        let numTiles = Math.floor(this.sys.canvas.width/32); 
+
+        for (let i = 0; i < numTiles; i++) {
+            this.ground = this.add.sprite(i * 32, this.sys.canvas.height/2, `ground`); 
+        }
     }
 
     createAvatarAnimations() {
