@@ -21,7 +21,8 @@ class Play extends Phaser.Scene {
 
         // Clef 
         this.clef = this.add.sprite(10, this.sys.canvas.height/2, `clef`); 
-        // this.createRest(); 
+
+        this.createRest(); 
 
         // Ground 
         this.createGround(); 
@@ -63,16 +64,28 @@ class Play extends Phaser.Scene {
 
     createRest() {
         let numRest = Phaser.Math.Between(8, 15); 
-        this.rests = this.physics.add.group({
-            key: `rest`, 
-            immovable: true, 
-            quantity: numRest
-        }); 
-        this.rests.children.each(function(rests) {
+
+        for (let i = 0; i < numRest; i++) {
             let x = Phaser.Math.Between(50, this.sys.canvas.width); 
-            let y = this.sys.canvas/2 + 32; 
-            rests.setPosition(x, y); 
-        }, this); 
+            let y = this.sys.canvas.height/2 - 32; 
+
+            let rest = this.physics.add.sprite(x, y, `rest`); 
+            rest.setImmovable(true); 
+        }
+        this.physics.add.collider(this.avatar, this.restGroup); 
+
+        
+
+        // this.rests = this.physics.add.group({
+        //     key: `rest`, 
+        //     immovable: true, 
+        //     quantity: numRest
+        // }); 
+        // this.rests.children.each(function(rests) {
+        //     let x = Phaser.Math.Between(50, this.sys.canvas.width); 
+        //     let y = this.sys.canvas/2 + 32; 
+        //     rests.setPosition(x, y); 
+        // }, this); 
     }
 
     createAvatarAnimations() {
