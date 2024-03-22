@@ -6,16 +6,15 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        // Title
         let style = {
             fontFamily: `sans-serif`, 
             fontSize: `40px`, 
             fill: `#000000`
         }; 
-
         let gameDescription = `Drummin' Drumsticks`; 
         this.gameText = this.add.text(this.sys.canvas.width/2, this.sys.canvas.height/4, gameDescription, style); 
         this.gameText.setOrigin(0.5); 
-        
 
         // Sounds 
         this.drumBeat = this.sound.add(`drumBeat`, {loop: false}); 
@@ -31,6 +30,7 @@ class Play extends Phaser.Scene {
         this.avatar.setCollideWorldBounds(true);
         this.avatar.setGravityY(300); 
 
+        // Collider so that the avatar stays on the ground 
         this.physics.add.collider(this.avatar, this.groundGroup); 
         
         // Load animations 
@@ -47,11 +47,12 @@ class Play extends Phaser.Scene {
     }
 
     createGround() {
-        let numTiles = Math.floor(this.sys.canvas.width/32);  
+        // Calculates the length of the canvas to 
+        // let numTiles = Math.floor(this.sys.canvas.width/32);  
         this.groundGroup = this.physics.add.group({
             key: `ground`, 
             immovable: true, 
-            quantity: numTiles 
+            quantity: 32 
         }); 
         let x = 0; 
         this.groundGroup.children.each(function(ground) {
