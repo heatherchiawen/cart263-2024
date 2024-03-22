@@ -8,16 +8,17 @@ class Boot extends Phaser.Scene {
     preload() {
         // Sounds 
         this.load.audio(`drumBeat`, `assets/sounds/drumBeat.wav`); 
-        
-        // Clef and ground 
+
+        // Clef, ground, and rest images  
         this.load.image(`clef`, `assets/images/clef.png`); 
         this.load.image(`ground`, `assets/images/ground.png`);  
+        this.load.image(`rest`, `assets/images/rest.png`); 
 
         // Drum 
         this.load.spritesheet(`drum`, `assets/images/drum.png`, {
             frameWidth: 32, 
             frameHeight: 32, 
-            endFrame: 2
+            endFrame: 0
         });
         
         // Avatar 

@@ -15,12 +15,13 @@ class Play extends Phaser.Scene {
         let gameDescription = `Drummin' Drumsticks`; 
         this.gameText = this.add.text(this.sys.canvas.width/2, this.sys.canvas.height/4, gameDescription, style); 
         this.gameText.setOrigin(0.5); 
-        
+
         // Sounds 
         this.drumBeat = this.sound.add(`drumBeat`, {loop: false}); 
 
         // Clef 
         this.clef = this.add.sprite(10, this.sys.canvas.height/2, `clef`); 
+        // this.createRest(); 
 
         // Ground 
         this.createGround(); 
@@ -57,6 +58,20 @@ class Play extends Phaser.Scene {
             x += 32;  
             let y = this.sys.canvas.height/2; 
             ground.setPosition(x, y); 
+        }, this); 
+    }
+
+    createRest() {
+        let numRest = Phaser.Math.Between(8, 15); 
+        this.rests = this.physics.add.group({
+            key: `rest`, 
+            immovable: true, 
+            quantity: numRest
+        }); 
+        this.rests.children.each(function(rests) {
+            let x = Phaser.Math.Between(50, this.sys.canvas.width); 
+            let y = this.sys.canvas/2 + 32; 
+            rests.setPosition(x, y); 
         }, this); 
     }
 
