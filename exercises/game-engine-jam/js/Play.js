@@ -6,6 +6,16 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        let style = {
+            fontFamily: `sans-serif`, 
+            fontSize: `40px`, 
+            fill: `#000000`
+        }; 
+
+        let gameDescription = `Drummin' Drumsticks`; 
+        this.gameText = this.add.text(this.sys.canvas.width/2, this.sys.canvas.height/4, gameDescription, style); 
+        this.gameText.setOrigin(0.5); 
+        
         // Sounds 
         this.drumBeat = this.sound.add(`drumBeat`, {loop: false}); 
 
@@ -18,14 +28,12 @@ class Play extends Phaser.Scene {
         // Create avatar 
         this.avatar = this.physics.add.sprite(0, this.sys.canvas.height/2 - 50, `avatar`); 
         this.avatar.setCollideWorldBounds(true);
-        // this.avatar.setDisplaySize(150, 150);  // TO MAKE BIGGER 
         this.avatar.setGravityY(300); 
 
         this.physics.add.collider(this.avatar, this.groundGroup); 
         
         // Load animations 
         this.createAvatarAnimations(); 
-        this.createDrumAnimations(); 
 
         // Avatar starts idling   
         this.avatar.play(`idle`); 
@@ -82,38 +90,9 @@ class Play extends Phaser.Scene {
         this.drum = this.physics.add.sprite(pointer.x, pointer.y, `drum`); 
         this.drum.setCollideWorldBounds(true); 
         this.drum.setImmovable(true); 
-        // this.drum.setDepth(this.avatar.depth - 1);
-
-        // Drum starts idling 
-        this.drum.play(`drumIdle`, true); 
 
         // Check overlap in avatarJump()
         this.physics.add.collider(this.avatar, this.drum, this.checkAvatarJump, null, this); 
-    }
-
-    createDrumAnimations() {
-        // Playing drums 
-        let drumAnimationConfig = {
-            key: `drumAnim`, 
-            frames: this.anims.generateFrameNumbers(`drum`, {
-                start: 0, 
-                end: 2
-            }), 
-            frameRate: 10, 
-            repeat: 1 
-        }
-        this.anims.create(drumAnimationConfig); 
-
-        // Idle drums 
-        let idleDrumAnimationConfig = {
-            key: `drumIdle`, 
-            frames: this.anims.generateFrameNumbers(`drum`, {
-                start: 0, 
-                end: 0
-            }), 
-            repeat: 0
-        }
-        this.anims.create(idleDrumAnimationConfig); 
     }
 
     checkAvatarJump(avatar, item) { 
