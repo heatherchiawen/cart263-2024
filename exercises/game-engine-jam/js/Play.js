@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // Title
+        // Title 
         let style = {
             fontFamily: `sans-serif`, 
             fontSize: `40px`, 
@@ -47,14 +47,14 @@ class Play extends Phaser.Scene {
     }
 
     createGround() {
-        // Calculates the length of the canvas to 
-        // let numTiles = Math.floor(this.sys.canvas.width/32);  
+        // Lines that define the ground, created in a group 
+        // WIth a collsion check with the avatar in create() 
         this.groundGroup = this.physics.add.group({
             key: `ground`, 
             immovable: true, 
             quantity: 32 
         }); 
-        let x = 0; 
+        let x = 0; // So that the tiles line up next to each other 
         this.groundGroup.children.each(function(ground) {
             x += 32;  
             let y = this.sys.canvas.height/2; 
@@ -98,6 +98,7 @@ class Play extends Phaser.Scene {
     }
 
     checkAvatarJump(avatar, item) { 
+        // Plays drum sound, then is destroyed 
         this.sound.play(`drumBeat`); 
         item.destroy(); 
     }
