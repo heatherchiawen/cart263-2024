@@ -3,9 +3,10 @@ class Static {
         this.pos = createVector(random(width), random(height)); 
         this.velocity = p5.Vector.random2D(); 
         this.acceleration = createVector(); 
-        this.maxSpeed = 4; 
+        this.maxSpeed = 10; 
         this.maxForce = 0.1; 
     }
+
     update() {
         this.velocity.add(this.acceleration); 
         this.velocity.limit(this.maxSpeed); 
@@ -13,6 +14,8 @@ class Static {
         this.acceleration.mult(0); 
         this.edges(); 
     }
+
+    // move()
    
     edges() {
         // handles endges 
