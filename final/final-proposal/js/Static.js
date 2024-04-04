@@ -1,43 +1,28 @@
 class Static {
-    constructor() {
-        this.pos = createVector(random(width), random(height)); 
-        this.velocity = p5.Vector.random2D(); 
-        this.acceleration = createVector(); 
-        this.maxSpeed = 10; 
-        this.maxForce = 0.1; 
+    constructor(x, y) {
+        this.x = x; 
+        this.y = y; 
+        this.vx = 0; 
+        this.vy = 0; 
+        this.speed = 10; 
+        this.jitteriness = 0.1; 
     }
 
-    update() {
-        this.velocity.add(this.acceleration); 
-        this.velocity.limit(this.maxSpeed); 
-        this.pos.add(this.velocity); 
-        this.acceleration.mult(0); 
-        this.edges(); 
-    }
-
-    // move()
-   
-    edges() {
-        // handles endges 
-        if (this.pos.x > width) {
-            this.pos.x = 0; 
+    move() {
+        let r = random(0, 1); 
+        if (r < this.jitteriness) {
+            this.vx = random(-this.speed, this.speed); 
+            this.vy = random(-this.speed, this.speed); 
         }
-        if (this.pos.x < 0) {
-            this.pos.x = width; 
-        }
-        if (this.pos.y > height) {
-            this.pos.y = 0; 
-        }
-        if (this.pos.y < 0) {
-            this.pos.y = height; 
-        }
-
-        // convert to screen space 
-    }
+        this.x = this.x + this.vx; 
+        this.y = this.y + this.vy; 
+        this.x = constrain(this.x, 0, width); 
+        this.y = constrain(this.y, 0, height); 
+    } 
 
     display() {
         stroke(255);
         strokeWeight(1); 
-        point(this.pos.x, this.pos.y); 
+        point(this.x, this.y); 
     }
 }

@@ -18,6 +18,10 @@ let handpose = undefined;
 let predictions = []; 
 let modelName = `Handpose`; 
 
+let fft; 
+let synth; 
+let pitchValue = 0; 
+
 // For creating the static class 
 let field = { 
     particles: [], 
@@ -36,6 +40,7 @@ function preload() {
 */
 function setup() {
     createCanvas(640, 480); 
+    userStartAudio(); // Starts audio in the program 
 
     // Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
     // User video 
@@ -55,9 +60,18 @@ function setup() {
         predictions = results;  
     });
 
-    // Create static/particles
+    // Setup sounds
+    synth = new p5.Oscillator(); 
+    synth.setType(`sine`); 
+    synth.amp(0); 
+    synth.start();  
+    fft = new p5.FFT(); 
+
+    // Setup static/particles
     for (let i = 0; i < field.numParticles; i++) {
-        let particle = new Static(); 
+        let x = random(0, width); 
+        let y = random(0, height); 
+        let particle = new Static(x, y); 
         field.particles.push(particle); 
     }
 }
@@ -97,25 +111,27 @@ function simulation() {
     for (let i = 0; i < field.particles.length; i++) {
         let particle = field.particles[i]; 
         particle.display(); 
-        particle.update(); 
+        particle.move(); 
     }
 }
 
 function handleResults() {
     // Check to see if there are any current predictions to display 
     if (predictions.length > 0) {   
-        consthandLandmarks = predictions[0].landmarks; 
-
-        for (let i = 0; i < field.particles.length; i++) {
-            let particle = field.particles[i]; 
-            for (let j = 0; j < handLandmarks.length; j++) {
-                const handLandmark = handLandmarks[j]; 
-
-                const d = dist(particle.pos.x, particle.pos.y, handLandmark[0], handLandmark[1]); 
-                if (d < 20) {
-                    particle.maxSpeed = 50; 
-                }
-            }
-        }
+       const annotations = predictions[0].annotations; 
+       // Positions of thumb determines pitch (frequency) 
+       let thumb = annotations.thumb[3]; 
+       // Based on mapped coordinates
+       pitchValue = map(thumb[1], 0, width, 71, 48); 
+       // Setting frequency to map
+       synth.freq(midiToFreq(pitchValue)); 
+       synth.amp(1); 
     } 
+    else {
+        synth.amp(0); 
+    }
+}
+
+function checkParticles() {
+    let spectrum = fft.analyze(); 
 }
