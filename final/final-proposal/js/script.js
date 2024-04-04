@@ -1,9 +1,12 @@
 /**
- * Final Project Proposal - TBA 
+ * Final Project Proposal - Particle Board 
  * Heather Chester
  * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
+ * For my final project, I propose wirking with ml5 handpose and p5.js to create a sound visualizing program. 
+ * This proposal program operates by using the ml5 handpose model to detect where sounds are mapped on the canvas. 
+ * The porgam then analyzes the sound output and move static (or particles) accordingly. 
+ * 
+ * Please see "Final Project Propsal" file for my written propsal and more information. 
  */
 
 "use strict";
@@ -12,12 +15,12 @@
  * Description of preload
 */
 // Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
-// Handpose variables/ properties
 let video = undefined; 
 let handpose = undefined; 
 let predictions = []; 
 let modelName = `Handpose`; 
 
+// Global variables for sounds 
 let fft; 
 let synth; 
 let pitchValue = 0; 
@@ -28,12 +31,12 @@ let field = {
     numParticles: 10000
 }; 
 
-let state = `loading`; // Initial loading state 
+// Initial loading state
+let state = `loading`;  
 
 function preload() {
 
 }
-
 
 /**
  * Description of setup
@@ -131,24 +134,22 @@ function handleResults() {
        synth.freq(midiToFreq(pitchValue)); 
        synth.amp(1); 
 
-       // Analyzes sound output for checkParticles()
-       let spectrum = fft.analyze(); 
-       checkParticles(spectrum); 
+       // Moving particles based on sound output
+       checkParticles(); 
     } 
     else {
         synth.amp(0); 
     }
 }
 
-function checkParticles(spectrum) {
+function checkParticles() {
 
     for (let i = 0; i < field.particles.length; i++) {
         let particle = field.particles[i]; 
         // Groups particles if pitch exeeds threshold 
         let pitchThreshold = 60; 
         if (pitchValue > pitchThreshold) {
-            // Particles move towards the center of the canvas
-            // With vectors and partcile velocity 
+            // Particles are pulled towards the center
             let center = createVector(width/2, height/2);  
             let pull = p5.Vector.sub(center, particle.pos); 
             pull.setMag(1); 
