@@ -126,12 +126,35 @@ function handleResults() {
        // Setting frequency to map
        synth.freq(midiToFreq(pitchValue)); 
        synth.amp(1); 
+
+       let spectrum = fft.analyze(); 
+       checkParticles(spectrum); 
     } 
     else {
         synth.amp(0); 
     }
 }
 
-function checkParticles() {
-    let spectrum = fft.analyze(); 
+function checkParticles(spectrum) {
+
+    for (let i = 0; i < field.particles.length; i++) {
+        let particle = field.particles[i]; 
+
+        // fft data to control particle movement 
+        let speedMultiplier = map(spectrum[500], 0, 255, 0.5, 2); 
+        let jitterMultiplier = map (spectrum[500], 0, 255, 0.05, 0.2); 
+        particle.speed = 10 * speedMultiplier; 
+        particle.jitteriness = 0.1 * jitterMultiplier; 
+
+        // Groups particles if pitch exeeds threshold 
+        let pitchThreshold = 60; 
+        if (pitchValue > pitchThreshold) {
+            // Particles move towards the center of the canvas
+            let center = createVector(width/2, height/2);  
+            let pull = p5.Vector.sub(center, createVector(particle.x, particle.y)); 
+            pull.setMag(1); 
+            particle.vx += pull.x; 
+            particle.vy += pull.y; 
+        }
+    } 
 }
