@@ -17,7 +17,6 @@ let video = undefined;
 let handpose = undefined; 
 let predictions = []; 
 let modelName = `Handpose`; 
-let hands = []; 
 
 // For creating the static class 
 let field = { 
@@ -103,20 +102,20 @@ function simulation() {
 }
 
 function handleResults() {
-    // if (predictions.length > 0) {   
-    //     const annotations = predictions[0].annotations; 
-    //     // Get hand landmarks 
-    //     // let landmarks = [];
-    // } 
+    // Check to see if there are any current predictions to display 
+    if (predictions.length > 0) {   
+        consthandLandmarks = predictions[0].landmarks; 
 
-    // THIS IS SUPPOSED TO DRAW ALL THE TRACKED HAND POINTS 
-    for (let i = 0; i < hands.length; i++) {
-        let hand = hands[i]; 
-        for (let j = 0; j < hand.keypoints.length; j++) {
-            let keypoint = hand.keypoints[j]; 
-            fill(0, 255, 0); 
-            noStroke(); 
-            circle(keypoint.x, keypoint.y, 10); 
+        for (let i = 0; i < field.particles.length; i++) {
+            let particle = field.particles[i]; 
+            for (let j = 0; j < handLandmarks.length; j++) {
+                const handLandmark = handLandmarks[j]; 
+
+                const d = dist(particle.pos.x, particle.pos.y, handLandmark[0], handLandmark[1]); 
+                if (d < 20) {
+                    particle.maxSpeed = 50; 
+                }
+            }
         }
-    }
+    } 
 }
