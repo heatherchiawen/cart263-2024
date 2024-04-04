@@ -13,8 +13,6 @@ class Static {
         this.acceleration.mult(0); 
         this.edges(); 
     }
-
-
    
     edges() {
         // handles endges 
@@ -36,7 +34,7 @@ class Static {
 
     display() {
         stroke(255);
-        strokeWeight(5); 
+        strokeWeight(1); 
         point(this.pos.x, this.pos.y); 
     }
 }
