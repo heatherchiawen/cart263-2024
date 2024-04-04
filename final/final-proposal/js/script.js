@@ -71,9 +71,6 @@ function setup() {
     for (let i = 0; i < field.numParticles; i++) {
         let pos = createVector(random(0, width), random(0, height)); 
         let particle = new Static(pos); 
-        // let x = random(0, width); 
-        // let y = random(0, height); 
-        // let particle = new Static(x, y); 
         field.particles.push(particle); 
     }
 }
@@ -107,6 +104,10 @@ function simulation() {
     const flippedVideo = ml5.flipImage(video);
     image(flippedVideo, 0, 0, width, height); 
 
+    // Tint to better see particle movement 
+    fill(0, 0, 0, 100); 
+    rect(0, 0, width, height); 
+
     // Check for new predictions 
     handleResults();
 
@@ -139,17 +140,10 @@ function handleResults() {
     }
 }
 
-function checkParticles() {
+function checkParticles(spectrum) {
 
     for (let i = 0; i < field.particles.length; i++) {
         let particle = field.particles[i]; 
-
-        // fft data to control particle movement 
-        // let speedMultiplier = map(spectrum[500], 0, 255, 0.5, 2); 
-        // let jitterMultiplier = map (spectrum[500], 0, 255, 0.05, 0.2); 
-        // particle.speed = particle.speed * speedMultiplier; 
-        // particle.jitteriness = particle.jitteriness * jitterMultiplier; 
-
         // Groups particles if pitch exeeds threshold 
         let pitchThreshold = 60; 
         if (pitchValue > pitchThreshold) {
@@ -159,11 +153,6 @@ function checkParticles() {
             let pull = p5.Vector.sub(center, particle.pos); 
             pull.setMag(1); 
             particle.velocity.add(pull); 
-
-            // let pull = p5.Vector.sub(center, createVector(particle.x, particle.y)); 
-            // pull.setMag(1); 
-            // particle.vx += pull.x; 
-            // particle.vy += pull.y; 
         }
     } 
 }
