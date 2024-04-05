@@ -1,10 +1,10 @@
 /**
- * Final Project Proposal - Particle Board 
+ * Final Project Prototype - Particle Board 
  * Heather Chester
  * 
- * For my final project, I propose wirking with ml5 handpose and p5.js to create a sound visualizing program. 
- * This proposal program operates by using the ml5 handpose model to detect where sounds are mapped on the canvas. 
- * The porgam then analyzes the sound output and move static (or particles) accordingly. 
+ * For my final project, I propose working with ml5 handpose and p5.js to create a sound visualizing program. 
+ * This prototype operates by using the ml5 handpose model to detect where sounds are mapped on the canvas. 
+ * The program then analyzes the sound output and move static (or particles) accordingly. 
  * 
  * Please see "Final Project Propsal" file for my written propsal and more information. 
  */
