@@ -1,4 +1,5 @@
 class Static {
+    // Class for partciles 
     constructor(pos) { 
         this.pos = pos; 
         this.velocity = createVector(random(-1, 1), random(-1, 1)); 

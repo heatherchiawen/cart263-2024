@@ -14,7 +14,8 @@
 /**
  * Description of preload
 */
-// Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
+
+// Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity
 let video = undefined; 
 let handpose = undefined; 
 let predictions = []; 
@@ -143,7 +144,6 @@ function handleResults() {
 }
 
 function checkParticles() {
-
     for (let i = 0; i < field.particles.length; i++) {
         let particle = field.particles[i]; 
         // Groups particles if pitch exeeds threshold 
