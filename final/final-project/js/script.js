@@ -3,6 +3,18 @@
  * Heather Chester 
  * 
  * Summary 
+ * 
+ * Goals: create different hand poses, connect specfic frequencies to hand poses, 
+ * maybe that'll make the sound better????, if not find a method that does make it better 
+ * connect frequencies to vector-based movement 
+ * 
+ * What other elements would be good to add, or should I just focus on the elements I already have decided on?
+ * Is this too close to actually being like a Chlandi plate, would that be a problem? 
+ * Is it too absract, would it not be as enjoyable for the user? 
+ * Is this big enough as a final project? 
+ * 
+ * Technical things: Do I have to declare all the hand poses in the main script or can I handle them in a class? 
+ * 
  */
 
 "use strict";

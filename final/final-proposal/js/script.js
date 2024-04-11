@@ -112,15 +112,15 @@ function simulation() {
     fill(0, 0, 0, 100); 
     rect(0, 0, width, height); 
 
-    // Check for new predictions 
-    handleResults();
+    // // Check for new predictions 
+    // handleResults();
 
-    // Display and movement of particles without hand recognition 
-    for (let i = 0; i < field.particles.length; i++) {
-        let particle = field.particles[i]; 
-        particle.display(); 
-        particle.move(); 
-    }
+    // // Display and movement of particles without hand recognition 
+    // for (let i = 0; i < field.particles.length; i++) {
+    //     let particle = field.particles[i]; 
+    //     particle.display(); 
+    //     particle.move(); 
+    // }
 }
 
 function handleResults() {
