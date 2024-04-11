@@ -4,6 +4,15 @@
  * 
  * Summary 
  * 
+ * Change num particles, maybe take it out of the class system
+ * Maybe change them to curves?? 
+ * 
+ * Maybe put the handposes in a class (if it works)
+ * 
+ * Work in seprate parts 
+ * Start out with the particle class and mouse pressed 
+ * 
+ * 
  * Goals: create different hand poses, connect specfic frequencies to hand poses, 
  * maybe that'll make the sound better????, if not find a method that does make it better 
  * connect frequencies to vector-based movement 
