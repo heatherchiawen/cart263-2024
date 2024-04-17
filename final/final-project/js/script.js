@@ -4,9 +4,6 @@
  * 
  * Summary 
  * 
- * Change num particles, maybe take it out of the class system
- * Maybe change them to curves?? 
- * 
  * Maybe put the handposes in a class (if it works)
  * 
  * Work in seprate parts 
@@ -17,14 +14,7 @@
  * maybe that'll make the sound better????, if not find a method that does make it better 
  * connect frequencies to vector-based movement 
  * 
- * What other elements would be good to add, or should I just focus on the elements I already have decided on?
- * Is this too close to actually being like a Chlandi plate, would that be a problem? 
- * Is it too absract, would it not be as enjoyable for the user? 
- * Is this big enough as a final project? 
- * 
- * Technical things: Do I have to declare all the hand poses in the main script or can I handle them in a class? 
- * 
- */
+ *
 
 "use strict";
 
@@ -48,6 +38,12 @@ let pitchValue = 0;
 //     particles: [], 
 //     numParticles: 10000
 // }; 
+
+// For creating the curve class 
+let field = {
+    curves: [], 
+    numCurves: 10
+}; 
 
 // Initial loading state 
 // let state = `loading`; 
@@ -90,7 +86,14 @@ function setup() {
     synth.start();  
     fft = new p5.FFT(); 
 
-    // // Setup curves 
+    // Setup curves 
+    for (let i = 0; i < field.numCurves; i++) {
+        // let pos = createVector(random(0, width), random(0, width)); // ADD 
+        let x = random(width); 
+        let y = random(height); 
+        let curve = new Curves(x, y); 
+        field.curves.push(curve); 
+    }
 }
 
 /**
@@ -104,7 +107,7 @@ function draw() {
     //     simulation(); 
     // }
 
-    background(0); 
+    background(255); 
     simulation(); 
 }
 
@@ -127,6 +130,13 @@ function simulation() {
 
     // Check for new predictions HANDPOSE 
     // handleResults();
+
+    // Curves 
+    for (let i = 0; i < field.curves.length; i++) {
+        let curve = field.curves[i]; 
+        curve.display(); 
+        // curve.move(); 
+    }
 }
 
 function handleResults() {

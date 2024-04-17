@@ -1,7 +1,10 @@
 class Curves {
     // Class for partciles 
-    constructor(pos) { 
-        this.pos = pos; 
+    constructor(x, y) { 
+        this.x = x; 
+        this.y = y; 
+        // this.pos = pos; 
+        this.offSet = random(-100, 100); 
         this.velocity = createVector(random(-1, 1), random(-1, 1)); 
     }
 
@@ -12,8 +15,13 @@ class Curves {
     } 
 
     display() {
-        stroke(255);
+        stroke(0);
         strokeWeight(1); 
-        point(this.pos.x, this.pos.y);
+
+        noFill(); 
+        beginShape(); 
+        vertex(this.x, this.y); 
+        bezierVertex(this.x + this.offSet, this.y + this.offSet, this.x + this.offSet, this.y + this.offSet, this.x + this.offSet, this.y + this.offSet); 
+        endShape(); 
     }
 }
