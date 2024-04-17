@@ -88,10 +88,11 @@ function setup() {
 
     // Setup curves 
     for (let i = 0; i < field.numCurves; i++) {
-        // let pos = createVector(random(0, width), random(0, width)); // ADD 
+        // let pos = createVector(random(0, width), random(0, width));
         let x = random(width); 
         let y = random(height); 
         let curve = new Curves(x, y); 
+        // let curve = new Curves(pos); 
         field.curves.push(curve); 
     }
 }
