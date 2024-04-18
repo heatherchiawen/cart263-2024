@@ -4,23 +4,13 @@
  * 
  * Summary 
  * 
- * Maybe put the handposes in a class (if it works)
  * 
- * Work in seprate parts 
- * Start out with the particle class and mouse pressed 
- * 
- * 
- * Goals: create different hand poses, connect specfic frequencies to hand poses, 
- * maybe that'll make the sound better????, if not find a method that does make it better 
- * connect frequencies to vector-based movement 
- * 
- *
-
-"use strict";
 
 /**
  * Description of preload
 */
+
+"use strict";
 
 // Setup for ml5 handpose, sampled from Pippin Barr's bubble-popper activity
 let video = undefined; 
@@ -131,18 +121,41 @@ function simulation() {
     // Check for new predictions HANDPOSE 
     // handleResults();
 
+    pitchValue = map(mouseX, 0, width, 48, 71); 
+    if (mouseIsPressed === true) {
+        synth.freq(midiToFreq(pitchValue)); 
+        synth.amp(1); 
+
+        checkCurves(); 
+    } else (
+        synth.amp(0)
+    )
+
+
     // Curves 
     for (let i = 0; i < field.curves.length; i++) {
         let curve = field.curves[i]; 
         curve.display(); 
         curve.move(); 
     }
+
 }
 
 function handleResults() {
-    
+    // HANDPOSE PREDICTIONS 
 }
 
-function mousePressed() {
+function checkCurves() {
+    for (let i = 0; i < field.curves.length; i++) {
+        let curve = field.curves[i]; 
+        let pitchThreshold = 60; 
+        if (pitchValue > pitchThreshold) {
 
+            let center = createVector(width/2, height/2); 
+            let pull = p5.Vector.sub(center, curve.anchor); 
+
+            pull.setMag(0.01); 
+            curve.vel.add(pull); 
+        }
+    }
 }
