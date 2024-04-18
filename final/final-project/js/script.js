@@ -33,12 +33,6 @@ let fft;
 let synth; 
 let pitchValue = 0; 
 
-// For creating the static class 
-// let field = {
-//     particles: [], 
-//     numParticles: 10000
-// }; 
-
 // For creating the curve class 
 let field = {
     curves: [], 
@@ -141,7 +135,7 @@ function simulation() {
     for (let i = 0; i < field.curves.length; i++) {
         let curve = field.curves[i]; 
         curve.display(); 
-        // curve.move(); 
+        curve.move(); 
     }
 }
 
