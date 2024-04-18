@@ -72,15 +72,14 @@ function setup() {
 
     // Setup curves 
     for (let i = 0; i < field.numCurves; i++) {
-        let x = random(width); 
-        let y = random(height); 
+        let x = random(0, width); 
+        let y = random(0, height); 
         let a = random(0, 200); 
         let b = random(0, 200); 
         let c = random(0, 200); 
         let d = random(0, 200); 
         let e = random(0, 200); 
         let f = random(0, 200); 
-        // let curve = new Curves(x, y); 
         let curve = new Curves(x, y, a, b, c, d, e, f); 
         field.curves.push(curve); 
     }
@@ -131,12 +130,19 @@ function simulation() {
         synth.amp(0)
     )
 
+    // if (mouseIsPressed === true) {
+    //     checkCurves();
+    // }
 
     // Curves 
     for (let i = 0; i < field.curves.length; i++) {
         let curve = field.curves[i]; 
+        // Add a check here that says if a hand does a certain movement then curves will appear 
         curve.display(); 
         curve.move(); 
+        // if (mouseIsPressed === true) {
+        //     curve.update(); 
+        // }    
     }
 
 }
@@ -150,10 +156,8 @@ function checkCurves() {
         let curve = field.curves[i]; 
         let pitchThreshold = 60; 
         if (pitchValue > pitchThreshold) {
-
             let center = createVector(width/2, height/2); 
             let pull = p5.Vector.sub(center, curve.anchor); 
-
             pull.setMag(0.01); 
             curve.vel.add(pull); 
         }
