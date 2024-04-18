@@ -1,34 +1,39 @@
 class Curves {
-    // Class for partciles 
-    constructor(x, y) { 
+    constructor(x, y, a, b, c, d, e, f) { 
+        // first point/ first anchor point 
         this.x = x; 
         this.y = y; 
-        // this.pos = pos; 
-        this.offSet = random(-50, 50); 
+        // second points in vertex 
+        this.a = a; 
+        this.b = b; 
+        // third points 
+        this.c = c; 
+        this.d = d; 
+        // fourth points 
+        this.e = e; 
+        this.f = f; 
 
         // this.velocity = createVector(random(-1, 1), random(-1, 1)); 
+        // this.vel = createVector(); //ADD
     }
 
     move() {
-        this.pos.add(this.velocity); 
-        this.pos.x = constrain(this.pos.x, 0, width); 
-        this.pos.y = constrain(this.pos.y, 0, height); 
+        // this.x.add(this.vel); 
+        // this.x.add(this.vel); 
+        this.x = constrain(this.x, 0, width); 
+        this.y = constrain(this.y, 0, height); 
     } 
 
     display() {
         stroke(0);
         strokeWeight(1); 
-
         noFill(); 
         beginShape()
-        // vertex(this.pos.x, this.pos.y); 
-        // bezierVertex(this.pos.x + this.offSet, this.pos.y + this.offSet, this.pos.x + this.offSet, this.pos.y + this.offSet, this.pos.x + this.offSet, this.pos.y + this.offSet);
-          
         // anchor point 
         vertex(this.x, this.y); 
         //coordinates for bezier curves 
-        // bezierVertex(this.x + this.offSet, this.y + this.offSet, this.x + this.offSet, this.y + this.offSet, this.x + this.offSet, this.y + this.offSet); 
-        bezierVertex(this.x + 80, this.y + 0, this.x + 80, this.y + 75, this.x + 30, this.y + 75); 
+        // bezierVertex(this.a, this.b, this.c, this.d, this.e, this.f); // THIS ONE CREATES LONGER LINES 
+        bezierVertex(this.x + this.a, this.y + this.b, this.x + this.c, this.y + this.d, this.x + this.e, this.y + this.f); 
         endShape(); 
     }
 }

@@ -42,7 +42,7 @@ let pitchValue = 0;
 // For creating the curve class 
 let field = {
     curves: [], 
-    numCurves: 10
+    numCurves: 30
 }; 
 
 // Initial loading state 
@@ -88,11 +88,16 @@ function setup() {
 
     // Setup curves 
     for (let i = 0; i < field.numCurves; i++) {
-        // let pos = createVector(random(0, width), random(0, width));
         let x = random(width); 
         let y = random(height); 
-        let curve = new Curves(x, y); 
-        // let curve = new Curves(pos); 
+        let a = random(0, 200); 
+        let b = random(0, 200); 
+        let c = random(0, 200); 
+        let d = random(0, 200); 
+        let e = random(0, 200); 
+        let f = random(0, 200); 
+        // let curve = new Curves(x, y); 
+        let curve = new Curves(x, y, a, b, c, d, e, f); 
         field.curves.push(curve); 
     }
 }
