@@ -74,13 +74,14 @@ function setup() {
     for (let i = 0; i < field.numCurves; i++) {
         let x = random(0, width); 
         let y = random(0, height); 
-        let a = random(0, 200); 
+        let a = random(0, 200);
         let b = random(0, 200); 
         let c = random(0, 200); 
         let d = random(0, 200); 
-        let e = random(0, 200); 
+        let e = random(0, 200);
         let f = random(0, 200); 
         let curve = new Curves(x, y, a, b, c, d, e, f); 
+        // let curve = new Curves(x, y); 
         field.curves.push(curve); 
     }
 }
@@ -120,15 +121,15 @@ function simulation() {
     // Check for new predictions HANDPOSE 
     // handleResults();
 
-    pitchValue = map(mouseX, 0, width, 48, 71); 
-    if (mouseIsPressed === true) {
-        synth.freq(midiToFreq(pitchValue)); 
-        synth.amp(1); 
+    // pitchValue = map(mouseX, 0, width, 48, 71); 
+    // if (mouseIsPressed === true) {
+    //     synth.freq(midiToFreq(pitchValue)); 
+    //     synth.amp(1); 
 
-        checkCurves(); 
-    } else (
-        synth.amp(0)
-    )
+    //     checkCurves(); 
+    // } else (
+    //     synth.amp(0)
+    // )
 
     // if (mouseIsPressed === true) {
     //     checkCurves();
@@ -140,9 +141,9 @@ function simulation() {
         // Add a check here that says if a hand does a certain movement then curves will appear 
         curve.display(); 
         curve.move(); 
-        // if (mouseIsPressed === true) {
-        //     curve.update(); 
-        // }    
+        if (mouseIsPressed === true) {
+            curve.update(); 
+        }    
     }
 
 }
