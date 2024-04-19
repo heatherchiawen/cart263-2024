@@ -1,35 +1,25 @@
 class Curves {
-    constructor(x, y, a, b, c, d, e, f) {
+    constructor(x, y) { 
         this.anchor = createVector(x, y); 
-        this.controlOne = createVector(a, b); 
-        this.controlTwo = createVector(c, d); 
-        this.controlThree = createVector(e, f); 
-        // this.controlOne = createVector(random(0, 200), random(0, 200)); 
-        // this.controlTwo = createVector(random(0, 200), random(0, 200)); 
-        // this.controlThree = createVector(random(0, 200), random(0, 200)); 
-        // this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
-        this.vel = createVector(random(0.5, 1), random(0.5, 1)); 
-        this.fallVel = random(5, 1); 
+        this.controlOne = createVector(random(0, 200), random(0, 200)); 
+        this.controlTwo = createVector(random(0, 200), random(0, 200)); 
+        this.controlThree = createVector(random(0, 200), random(0, 200)); 
+        this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
+        
+        this.gravity = 0.1;
     }
     move() {
-        // this.anchor.add(this.vel); 
-        // this.controlOne.add(this.vel); 
-        // this.controlTwo.add(this.vel); 
-        // this.controlThree.add(this.vel); 
+        this.anchor.add(this.vel); 
+        this.controlOne.add(this.vel); 
+        this.controlTwo.add(this.vel); 
+        this.controlThree.add(this.vel); 
 
-        if (this.anchor.x > width || this.controlOne.x > width || this.controlTwo.x > width || this.controlThree.x > width) {
-            this.anchor.x.sub(this.vel.x); 
-        }
-        if (this.anchor.x < 0 || this.controlOne.x < 0 || this.controlTwo.x < 0 || this.controlThree.x < 0) {
-
-            this.ancho.x.add(this.vel.x); 
-        } 
-        if (this.anchor.y > height || this.controlOne.y > height || this.controlTwo.y > height || this.controlThree.y > height) {
-            this.anchor.y.sub(this.vel.y); 
-        }
-        if (this.anchor.y < 0 || this.controlOne.y < 0 || this.controlTwo.y < 0 || this.controlThree.y < 0) { 
-            this.anchor.y.add(this.vel.y); 
-        }
+        if (this.anchor.x < -200 || this.anchor.x > width + 200 || this.anchor.y < -200 || this.anchor.y > height + 200 || 
+            this.controlOne.x < -200 || this.controlOne.x > width + 200 || this.controlOne.y < -200 || this.controlOne.y > height + 200 || 
+            this.controlTwo.x < -200 || this.controlTwo.x > width + 200 || this.controlTwo.y < -200 || this.controlTwo.y > height + 200||
+            this.controlThree.x < -200 || this.controlThree.x > width + 200|| this.controlThree.y < -200 || this.controlThree.y > height + 200) {
+                this.vel.mult(-1);
+            }
     }
     update() {
         // Something that allows for the curves to jump randomly 
@@ -65,6 +55,11 @@ class Curves {
         // this.controlTwo.y += 200; 
         // this.controlThree.y += 200;
 
+        this.vel.y += this.gravity; 
+        this.anchor.y += this.vel.y; 
+        // if (this.anchor.y > height) {
+        //     this.vel.y = -this.vel.y; 
+        // }
 
     }
     display() {
