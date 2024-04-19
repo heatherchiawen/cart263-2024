@@ -24,9 +24,14 @@ let synth;
 let pitchValue = 0; 
 
 // For creating the curve class 
+// let field = {
+//     curves: [], 
+//     numCurves: 40
+// }; 
+
 let field = {
-    curves: [], 
-    numCurves: 40
+    balls: [], 
+    numBalls: 40
 }; 
 
 // Initial loading state 
@@ -71,11 +76,19 @@ function setup() {
     fft = new p5.FFT(); 
 
     // Setup curves 
-    for (let i = 0; i < field.numCurves; i++) {
+    // for (let i = 0; i < field.numCurves; i++) {
+    //     let x = random(0, width); 
+    //     let y = random(0, height); 
+    //     let curve = new Curves(x, y); 
+    //     field.curves.push(curve); 
+    // }
+
+    // Set up Balls 
+    for (let i = 0; i < field.numBalls; i++) {
         let x = random(0, width); 
         let y = random(0, height); 
-        let curve = new Curves(x, y); 
-        field.curves.push(curve); 
+        let ball = new Ball(x, y); 
+        field.balls.push(ball); 
     }
 }
 
@@ -90,7 +103,7 @@ function draw() {
     //     simulation(); 
     // }
 
-    background(255); 
+    background(0); 
     simulation(); 
 }
 
@@ -129,16 +142,25 @@ function simulation() {
     // }
 
     // Curves 
-    for (let i = 0; i < field.curves.length; i++) {
-        let curve = field.curves[i]; 
-        // Add a check here that says if a hand does a certain movement then curves will appear 
-        curve.display(); 
-        curve.move(); 
+    // for (let i = 0; i < field.curves.length; i++) {
+    //     let curve = field.curves[i]; 
+    //     // Add a check here that says if a hand does a certain movement then curves will appear 
+    //     curve.display(); 
+    //     curve.move(); 
+    //     if (mouseIsPressed === true) {
+    //         curve.update(); 
+    //     }    
+    // }
+
+    for (let i = 0; i < field.balls.length; i++) {
+        let ball = field.balls[i]; 
+        ball.display(); 
+        ball.move(); 
         if (mouseIsPressed === true) {
-            curve.update(); 
+            ball.update(); 
+            ball.square(); 
         }    
     }
-
 }
 
 function handleResults() {
@@ -146,6 +168,18 @@ function handleResults() {
 }
 
 function checkCurves() {
+    // for (let i = 0; i < field.curves.length; i++) {
+    //     let curve = field.curves[i]; 
+    //     let pitchThreshold = 60; 
+    //     if (pitchValue > pitchThreshold) {
+    //         let center = createVector(width/2, height/2); 
+    //         let pull = p5.Vector.sub(center, curve.anchor); 
+    //         pull.setMag(0.01); 
+    //         curve.vel.add(pull); 
+    //     }
+    // }
+
+    // CHANGE TO BALL 
     for (let i = 0; i < field.curves.length; i++) {
         let curve = field.curves[i]; 
         let pitchThreshold = 60; 
