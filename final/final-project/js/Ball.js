@@ -1,26 +1,21 @@
 class Ball {
     constructor(x, y) { 
         this.pos = createVector(x, y); 
-        this.size = createVector(300, 300); 
+        this.size = 300; 
         this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
-        this.color = { 
-            r: random(0, 200), 
-            g: random(0, 200), 
-            b: random(0, 200)
-        }; 
+        // this.color = { 
+        //     r: random(0, 255), 
+        //     g: random(0, 255), 
+        //     b: random(0, 255)
+        // }; 
+        this.color = random(0, 255); 
         
         this.gravity = 0.1;
         this.center = 0; 
         this.pull = 0; 
         
-        this.cornerOne = 0; // Top left 
-        this.cornerTwo = 0; // Top right 
-        this.cornerThree = 0; // Bottom left 
-        this.cornerFour = 0; // Bottom right 
-        this.reachedCorner = false; 
-        
         this.jitter = 0.1; 
-        this.growRate = 0.25; 
+        this.growRate = 0.5; 
         this.minSize = 5;
         this.maxSize = 600; 
 
@@ -29,89 +24,72 @@ class Ball {
         this.orbit = 0; 
         this.orbitRadius = 200; 
     }
+
     move() {
         this.pos.add(this.vel); 
-        if (this.pos < - 20|| this.pos.x > width + 20 || this.pos.y < - 20|| this.pos.height + 20 ) {
+        if (this.pos < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height) {
             this.vel.mult(-1);
         }
     }
+
     update() {
+        // RIPPLE??
+    }
 
+    orbit() {
         // Orbit 
-        // this.angle += 0.01; 
-        // this.orbit = createVector(mouseX, mouseY); 
-        // let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
-        // let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
-        // this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.025); 
+        this.angle += 0.01; 
+        this.orbit = createVector(mouseX, mouseY); 
+        let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
+        let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
+        this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.05); 
+    }
 
+    center() {
         // center
-        // this.center = createVector(width/2, height/2); 
-        // this.pull = p5.Vector.sub(this.center, this.pos); 
-        // this.pull.setMag(0.01); 
-        // this.vel.add(this.pull); 
+        this.center = createVector(width/2, height/2); 
+        this.pull = p5.Vector.sub(this.center, this.pos); 
+        this.pull.setMag(0.05); 
+        this.vel.add(this.pull); 
+    }
 
+    gravity() {
         // gravity 
-        // this.vel.y += this.gravity; 
-        // this.pos.y += this.vel.y; 
-        // if (this.pos.y > height) {
-        //     this.vel.y = -this.vel.y; 
-        // }
-
+        this.vel.y += this.gravity; 
+        this.pos.y += this.vel.y; 
+        if (this.pos.y > height) {
+            this.vel.y = -this.vel.y; 
+        }
+    }
+    
+    jitter() {
         // Jitter 
-        // let r = random(0, 1); 
-        // if (r < this.jitter) {
-        //     this.pos.add(random(-100, 100)); 
-        // }
+        let r = random(0, 1); 
+        if (r < this.jitter) {
+            this.pos.add(random(-100, 100)); 
+        }
+    }
 
+    grow() {
         // Grow 
-        // this.size.x += this.growRate; 
-        // this.size.y += this.growRate; 
-        // if (this.size.x > this.maxSize || this.size.y > this.maxSize) {
-        //     this.growRate = 0; 
-        // }
+        this.size += this.growRate; 
+        if (this.size > this.maxSize) {
+            this.growRate = 0; 
+        }
+    }
 
+    shrink() {
         // Shrink 
-        // this.size.x -= this.growRate; 
-        // this.size.y -= this.growRate; 
-        // if (this.size.x < 1 || this.size.y < 1) {
-        //     this.growRate = 0; 
-        // }
+        this.size -= this.growRate; 
+        if (this.size < 1) {
+            this.growRate = 0; 
+        }
     }
-    square() { // FIXXXXX THIS WHY DOES IT KEEP MOVING SO MUCH MAYBE CREATE THE CHECK IN THE MAIN SCRIPT 
-        this.cornerOne = createVector(width/4, height/4); 
-        this.cornerTwo = createVector(width/4 + width/2, height/4); 
-        this.cornerThree = createVector(width/4, height/4 + height/2); 
-        this.cornerFour = createVector(width/4 + width/2, height/4 + height/2); 
 
-        let dOne = p5.Vector.dist(this.cornerOne, this.pos); 
-        let dTwo = p5.Vector.dist(this.cornerTwo, this.pos); 
-        let dThree = p5.Vector.dist(this.cornerThree, this.pos); 
-        let dFour = p5.Vector.dist(this.cornerFour, this.pos); 
-
-        if (!this.reachedCorner) {
-            if (dOne < width/2 && dOne < height/2) {
-                this.pull = p5.Vector.sub(this.cornerOne, this.pos); 
-            }
-            if (dTwo < width/2 && dTwo < height/2) {
-                this.pull = p5.Vector.sub(this.cornerTwo, this.pos); 
-            }
-            if (dThree < width/2 && dThree < height/2) {
-                this.pull = p5.Vector.sub(this.cornerThree, this.pos); 
-            }
-            if (dFour < width/2 && dFour < height/2) {
-                this.pull = p5.Vector.sub(this.cornerFour, this.pos); 
-            }
-            this.pull.setMag(0.01);
-            this.vel.add(this.pull); 
-        } 
-        // else if (dOne < 50 || dTwo < 50 || dThree < 50 || dFour < 50) {
-        //     this.pull.set(0, 0); 
-        // }
-        // this.vel.add(this.pull);
-    }
     display() {
         noStroke(); 
-        fill(this.color.r, this.color.g, this.color.b, 50); 
-        ellipse(this.pos.x, this.pos.y, this.size.x, this.size.y); 
+        // fill(this.color.r, this.color.g, this.color.b, 50); 
+        fill(this.color, 50); 
+        ellipse(this.pos.x, this.pos.y, this.size); 
     }
 }

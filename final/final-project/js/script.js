@@ -13,8 +13,8 @@
 "use strict";
 
 // Setup for ml5 handpose, sampled from Pippin Barr's bubble-popper activity
-let video = undefined; 
-let handpose = undefined; 
+let video; 
+let handpose; 
 let predictions = []; 
 let modelName = `Handpose`; 
 
@@ -25,11 +25,11 @@ let pitchValue = 0;
 
 let field = {
     balls: [], 
-    numBalls: 40
+    numBalls: 20
 }; 
 
 // Initial loading state 
-// let state = `loading`; 
+let state = `loading`; 
 
 
 function preload() {
@@ -42,32 +42,25 @@ function preload() {
 */
 function setup() {
     createCanvas(640, 480); 
-    userStartAudio(); // Starts audio in the program 
+    // userStartAudio(); // Starts audio in the program 
 
     // Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
     // User video 
-    // video = createCapture(VIDEO); 
-    // video.hide(); 
+    video = createCapture(VIDEO); 
+    video.hide(); 
 
-    // // Ml5 setup 
-    // handpose = ml5.handpose(video, {
-    //     fliphorizontal: true 
-    // }, function() {
-    //     console.log(`Model loaded.`); 
-    //     state = `simulation`; 
-    // }); 
-    // // Listens to presdictions 
-    // handpose.on(`predict`, function(results) {
-    //     console.log(results); 
-    //     predictions = results;  
-    // });
-
-    // Setup sounds
-    synth = new p5.Oscillator(); 
-    synth.setType(`sine`); 
-    synth.amp(0); 
-    synth.start();  
-    fft = new p5.FFT(); 
+    // Ml5 setup 
+    handpose = ml5.handpose(video, {
+        flipHorizontal: true 
+    }, function() {
+        console.log(`Model loaded.`); 
+        state = `simulation`; 
+    }); 
+    // Listens to presdictions 
+    handpose.on(`predict`, function(results) {
+        console.log(results); 
+        predictions = results;  
+    });
 
     // Set up Balls 
     for (let i = 0; i < field.numBalls; i++) {
@@ -82,15 +75,14 @@ function setup() {
  * Description of draw()
 */
 function draw() {
-    // if (state === `loading`) {
-    //     loading(); 
-    // }
-    // else if (state === `simulation`) {
-    //     simulation(); 
-    // }
+    if (state === `loading`) {
+        loading(); 
+    }
+    else if (state === `simulation`) {
+        simulation(); 
+    }
 
-    background(255); 
-    simulation(); 
+    // simulation(); 
 }
 
 function loading() {
@@ -107,42 +99,34 @@ function loading() {
 
 function simulation() {
     // User webcam display HANDPOSE 
-    // const flippedVideo = ml5.flipImage(video);
-    // image(flippedVideo, 0, 0, width, height); 
+    const flippedVideo = ml5.flipImage(video);
+    image(flippedVideo, 0, 0, width, height); 
+
+    // for (let i = 0; i < field.balls.length; i++) {
+    //     let ball = field.balls[i]; 
+    //     ball.display(); 
+    //     ball.move(); 
+    // }
 
     // Check for new predictions HANDPOSE 
-    // handleResults();
-
-    // pitchValue = map(mouseX, 0, width, 48, 71); 
-    // if (mouseIsPressed === true) {
-    //     synth.freq(midiToFreq(pitchValue)); 
-    //     synth.amp(1); 
-    // } else (
-    //     synth.amp(0)
-    // )
-
-    for (let i = 0; i < field.balls.length; i++) {
-        let ball = field.balls[i]; 
-        ball.display(); 
-        ball.move(); 
-        if (mouseIsPressed === true) {
-            ball.update(); 
-            // ball.square(); 
-        }     
-    }
+    handleResults();
 }
 
 function handleResults() {
-    // HANDPOSE PREDICTIONS 
+    if (predictions.length > 0) {
+        // const annotations = predictions[0].annotations; 
+        // let thumb = annotations.thumb[3]; 
+        
+        
+        // handleBalls(); 
+    }
 }
 
-// function mousePressed() {
-//     for (let i = 0; i < field.balls.length; i++) {
-//         let ball = field.balls[i]; 
-//             let d = dist(mouseX, mouseY, ball.pos.x, ball.pos.y)
-//             if (d < ball.size/2) {
-//                 field.balls.splice(i, 1); 
-//                 break; 
-//         }    
-//     }    
-// }
+function handleBalls() {
+    for (let i = 0; i < field.balls.length; i++) {
+        let ball = field.balls[i];  
+        // ball.update(); 
+        // ball.grow(); 
+        ball.center(); 
+    }
+}
