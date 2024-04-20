@@ -60,7 +60,6 @@ class Curves {
         // if (this.anchor.y > height) {
         //     this.vel.y = -this.vel.y; 
         // }
-
     }
     display() {
         stroke(0);

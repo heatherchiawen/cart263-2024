@@ -1,7 +1,8 @@
 class Ball {
     constructor(x, y) { 
         this.pos = createVector(x, y); 
-        this.size = createVector(random(5, 20), random(5, 20)); 
+        // this.size = createVector(random(100, 300), random(100, 300)); 
+        this.size = createVector(300, 300); 
         this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
         this.gravity = 0.1;
         this.center = 0; 
@@ -10,6 +11,10 @@ class Ball {
         this.cornerTwo = 0; // Top right 
         this.cornerThree = 0; // Bottom left 
         this.cornerFour = 0; // Bottom right 
+        this.jitter = 0.1; 
+        this.growRate = 0.25; 
+        this.minSize = 5;
+        this.maxSize = 600; 
 
         this.reachedCorner = false; 
     }
@@ -20,20 +25,43 @@ class Ball {
         }
     }
     update() {
-        // THIS WORKS FOR DRAGGING CIRCLES TO CENTER 
+        // center
         // this.center = createVector(width/2, height/2); 
         // this.pull = p5.Vector.sub(this.center, this.pos); 
         // this.pull.setMag(0.01); 
         // this.vel.add(this.pull); 
 
-        // Gravity bounce 
+        // gravity 
         // this.vel.y += this.gravity; 
         // this.pos.y += this.vel.y; 
         // if (this.pos.y > height) {
         //     this.vel.y = -this.vel.y; 
         // }
+
+        // Jitter 
+        // let r = random(0, 1); 
+        // if (r < this.jitter) {
+        //     this.pos.add(random(-100, 100)); 
+        // }
+
+        // Grow 
+        // this.size.x += this.growRate; 
+        // this.size.y += this.growRate; 
+        // if (this.size.x > this.maxSize || this.size.y > this.maxSize) {
+        //     this.growRate = 0; 
+        // }
+
+        // Shrink 
+        // this.size.x -= this.growRate; 
+        // this.size.y -= this.growRate; 
+        // if (this.size.x < 1 || this.size.y < 1) {
+        //     this.growRate = 0; 
+        // }
+
+        // Orbit 
+        
     }
-    square() {
+    square() { // FIXXXXX THIS WHY DOES IT KEEP MOVING SO MUCH MAYBE CREATE THE CHECK IN THE MAIN SCRIPT 
         this.cornerOne = createVector(width/4, height/4); 
         this.cornerTwo = createVector(width/4 + width/2, height/4); 
         this.cornerThree = createVector(width/4, height/4 + height/2); 
@@ -57,16 +85,13 @@ class Ball {
             if (dFour < width/2 && dFour < height/2) {
                 this.pull = p5.Vector.sub(this.cornerFour, this.pos); 
             }
-            this.pull.setMag(0.05); 
-            this.vel.add(this.pull);
-        }
-
-        // if (this.pos.x === this.cornerOne.x && this.pos.y === this.cornerOne.y ||
-        //     this.pos.x === this.cornerTwo.x && this.pos.y === this.cornerTwo.y ||
-        //     this.pos.x === this.cornerThree.x && this.pos.y === this.cornerThree.y || 
-        //     this.pos.x === this.cornerFour.x && this.pos.y === this.corner.y) {
-        //         this.vel.set(0, 0);
+            this.pull.setMag(0.01);
+            this.vel.add(this.pull); 
+        } 
+        // else if (dOne < 50 || dTwo < 50 || dThree < 50 || dFour < 50) {
+        //     this.pull.set(0, 0); 
         // }
+        // this.vel.add(this.pull);
     }
     display() {
         stroke(255);
