@@ -1,22 +1,33 @@
 class Ball {
     constructor(x, y) { 
         this.pos = createVector(x, y); 
-        // this.size = createVector(random(100, 300), random(100, 300)); 
         this.size = createVector(300, 300); 
         this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
+        this.color = { 
+            r: random(0, 200), 
+            g: random(0, 200), 
+            b: random(0, 200)
+        }; 
+        
         this.gravity = 0.1;
         this.center = 0; 
         this.pull = 0; 
+        
         this.cornerOne = 0; // Top left 
         this.cornerTwo = 0; // Top right 
         this.cornerThree = 0; // Bottom left 
         this.cornerFour = 0; // Bottom right 
+        this.reachedCorner = false; 
+        
         this.jitter = 0.1; 
         this.growRate = 0.25; 
         this.minSize = 5;
         this.maxSize = 600; 
 
-        this.reachedCorner = false; 
+        this.angle = 0; 
+        this.angleOffset = random(1, 5);  
+        this.orbit = 0; 
+        this.orbitRadius = 200; 
     }
     move() {
         this.pos.add(this.vel); 
@@ -25,6 +36,14 @@ class Ball {
         }
     }
     update() {
+
+        // Orbit 
+        // this.angle += 0.01; 
+        // this.orbit = createVector(mouseX, mouseY); 
+        // let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
+        // let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
+        // this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.025); 
+
         // center
         // this.center = createVector(width/2, height/2); 
         // this.pull = p5.Vector.sub(this.center, this.pos); 
@@ -57,9 +76,6 @@ class Ball {
         // if (this.size.x < 1 || this.size.y < 1) {
         //     this.growRate = 0; 
         // }
-
-        // Orbit 
-        
     }
     square() { // FIXXXXX THIS WHY DOES IT KEEP MOVING SO MUCH MAYBE CREATE THE CHECK IN THE MAIN SCRIPT 
         this.cornerOne = createVector(width/4, height/4); 
@@ -94,9 +110,8 @@ class Ball {
         // this.vel.add(this.pull);
     }
     display() {
-        stroke(255);
-        strokeWeight(1); 
-        noFill(); 
+        noStroke(); 
+        fill(this.color.r, this.color.g, this.color.b, 50); 
         ellipse(this.pos.x, this.pos.y, this.size.x, this.size.y); 
     }
 }

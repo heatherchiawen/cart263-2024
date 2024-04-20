@@ -89,7 +89,7 @@ function draw() {
     //     simulation(); 
     // }
 
-    background(0); 
+    background(255); 
     simulation(); 
 }
 
