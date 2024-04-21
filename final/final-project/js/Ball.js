@@ -18,6 +18,14 @@ class Ball {
         this.cornerTwo; // Top right 
         this.cornerThree; // Bottom left 
         this.cornerFour; // Bottom right 
+
+        this.synth = new p5.Oscillator(); 
+        this.env = new p5.Envelope(); 
+        this.env.setADSR(0.1, 0.1, 1, 0.5); 
+        this.synth.amp(this.env); 
+        this.synth.start(); 
+        this.synth.fade(); 
+        this.synth.setType(`triangle`);
     }
 
     move() {
@@ -28,6 +36,8 @@ class Ball {
     }
 
     orbiting() {
+        this.synth.freq(60); 
+
         this.angle += 0.01; 
         this.orbit = createVector(width/2, height/2); 
         let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 

@@ -18,8 +18,7 @@ let predictions = [];
 let modelName = `Handpose`; 
 
 // Global variables for sounds 
-let synth; 
-let pitchValue = 0; 
+// let synth; 
 
 // Ball class 
 let field = {
@@ -68,12 +67,6 @@ function setup() {
         let ball = new Ball(x, y, size); 
         field.balls.push(ball); 
     }
-
-    // Set up sounds 
-    synth = new p5.Oscillator(); 
-    synth.setType(`triangle`); 
-    synth.amp(0); 
-    synth.start();  
 }
 
 /**
@@ -121,12 +114,7 @@ function handleResults() {
         const annotations = predictions[0].annotations; 
         handShown(annotations); 
         // setTimeout(handleResults, 1000); 
-        // synth.freq(60, 0.7); 
-        // synth.amp(0, 0.1, 0.7); 
     }
-    // else {
-    //     synth.amp(0, 0.1, 0.7); 
-    // }
 }
 
 function handShown(annotations) {
@@ -164,7 +152,6 @@ function handShown(annotations) {
             else {
                 ball.pos.lerp(createVector(scopeX, scopeYTwo), 0.05); 
             }
-            synth.freq(freqToMidi()); 
         } 
     }
 }
