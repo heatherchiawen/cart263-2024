@@ -4,7 +4,6 @@
  * 
  * Summary 
  * 
- * 
 
 /**
  * Description of preload
@@ -81,8 +80,6 @@ function draw() {
     else if (state === `simulation`) {
         simulation(); 
     }
-
-    // simulation(); 
 }
 
 function loading() {
@@ -127,21 +124,28 @@ function handShown(annotations) {
     let ringTipY = annotations.ringFinger[3][1]; 
     let pinkyTipY = annotations.pinky[3][1];  
 
-
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i];  
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
-            ball.update(); 
+            // ball.jitterOn === true; 
+            ball.jitter(); 
         }
         else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
             console.log("thumb");
+            // ball.growOn === true; 
+            ball.grow(); 
         }
         else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
             console.log("index");
+            // ball.orbitOn === true; 
+            ball.grow(); 
         }
         else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
             console.log("pinky");
+            // ball.shrinkOn === true; 
+            ball.shrink(); 
         }
+        // ball.update(); 
     }
 }

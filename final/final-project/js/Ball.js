@@ -40,8 +40,7 @@ class Ball {
     }
 
     update() {
-        // RIPPLE??
-        if (this.orbitOn === true) {
+        if (this.orbitOn === true) { // index 
             this.orbit(); 
         }
         else if (this.centerOn === true) {
@@ -50,19 +49,18 @@ class Ball {
         else if (this.gravityOn === true) {
             this.gravity(); 
         }
-        else if (this.jitterOn === true) {
+        else if (this.jitterOn === true) { // open hand
             this.jitter(); 
         }
-        else if (this.shrinkOn === true) {
+        else if (this.shrinkOn === true) { // pinky
             this.shrink(); 
         }
-        else if (this.growOn === true) {
+        else if (this.growOn === true) { // thumb
             this.grow(); 
         }
     }
 
     orbit() {
-        // Orbit 
         this.angle += 0.01; 
         this.orbit = createVector(mouseX, mouseY); 
         let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
@@ -71,7 +69,6 @@ class Ball {
     }
 
     center() {
-        // center
         this.center = createVector(width/2, height/2); 
         this.pull = p5.Vector.sub(this.center, this.pos); 
         this.pull.setMag(0.05); 
@@ -79,7 +76,6 @@ class Ball {
     }
 
     gravity() {
-        // gravity 
         this.vel.y += this.gravity; 
         this.pos.y += this.vel.y; 
         if (this.pos.y > height) {
@@ -88,7 +84,6 @@ class Ball {
     }
     
     jitter() {
-        // Jitter 
         let r = random(0, 1); 
         if (r < this.jitter) {
             this.pos.add(random(-100, 100)); 
@@ -96,7 +91,6 @@ class Ball {
     }
 
     grow() {
-        // Grow 
         this.size += this.growRate; 
         if (this.size > this.maxSize) {
             this.growRate = 0; 
@@ -104,7 +98,6 @@ class Ball {
     }
 
     shrink() {
-        // Shrink 
         this.size -= this.growRate; 
         if (this.size < 1) {
             this.growRate = 0; 
