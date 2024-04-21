@@ -17,9 +17,6 @@ let handpose;
 let predictions = []; 
 let modelName = `Handpose`; 
 
-// Global variables for sounds 
-// let synth; 
-
 // Ball class 
 let field = {
     balls: [], 
@@ -113,7 +110,6 @@ function handleResults() {
     if (predictions.length > 0) {
         const annotations = predictions[0].annotations; 
         handShown(annotations); 
-        // setTimeout(handleResults, 1000); 
     }
 }
 
@@ -126,17 +122,21 @@ function handShown(annotations) {
 
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i];  
+        ball.synth.amp(1, 0.1, 0.7); 
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
             ball.orbiting();
+            ball.synth.freq(60); 
         }
         else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
             console.log("thumb");
             ball.square(); 
+            ball.synth.freq(120); 
         }
         else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
             console.log("index");
             ball.center(); 
+            ball.synth.freq(180); 
         }
         else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
             console.log("pinky");
@@ -152,6 +152,7 @@ function handShown(annotations) {
             else {
                 ball.pos.lerp(createVector(scopeX, scopeYTwo), 0.05); 
             }
+            ball.synth.freq(240); 
         } 
     }
 }

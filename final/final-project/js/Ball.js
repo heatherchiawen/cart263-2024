@@ -20,11 +20,8 @@ class Ball {
         this.cornerFour; // Bottom right 
 
         this.synth = new p5.Oscillator(); 
-        this.env = new p5.Envelope(); 
-        this.env.setADSR(0.1, 0.1, 1, 0.5); 
-        this.synth.amp(this.env); 
+        this.synth.amp(0); 
         this.synth.start(); 
-        this.synth.fade(); 
         this.synth.setType(`triangle`);
     }
 
@@ -36,17 +33,11 @@ class Ball {
     }
 
     orbiting() {
-        this.synth.freq(60); 
-
         this.angle += 0.01; 
         this.orbit = createVector(width/2, height/2); 
         let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
         let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
         this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.05);
-    }
-
-    center() {
-        this.pos.lerp(createVector(width/2, height/2), 0.05); 
     }
 
     square() { 
@@ -72,6 +63,10 @@ class Ball {
         if (dFour < width/4 && dFour < height/4) {
             this.pos.lerp(this.cornerFour, 0.05);
         }
+    }
+
+    center() {
+        this.pos.lerp(createVector(width/2, height/2), 0.05); 
     }
 
     display() {
