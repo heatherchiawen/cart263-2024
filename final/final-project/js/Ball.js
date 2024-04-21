@@ -23,6 +23,13 @@ class Ball {
         this.angleOffset = random(1, 5);  
         this.orbit = 0; 
         this.orbitRadius = 200; 
+
+        this.orbitOn = false; 
+        this.centerOn = false; 
+        this.gravityOn = false; 
+        this.jitterOn = false; 
+        this.shrinkOn = false; 
+        this.growOn = false; 
     }
 
     move() {
@@ -34,6 +41,24 @@ class Ball {
 
     update() {
         // RIPPLE??
+        if (this.orbitOn === true) {
+            this.orbit(); 
+        }
+        else if (this.centerOn === true) {
+            this.center(); 
+        }
+        else if (this.gravityOn === true) {
+            this.gravity(); 
+        }
+        else if (this.jitterOn === true) {
+            this.jitter(); 
+        }
+        else if (this.shrinkOn === true) {
+            this.shrink(); 
+        }
+        else if (this.growOn === true) {
+            this.grow(); 
+        }
     }
 
     orbit() {

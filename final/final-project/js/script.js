@@ -102,11 +102,11 @@ function simulation() {
     const flippedVideo = ml5.flipImage(video);
     image(flippedVideo, 0, 0, width, height); 
 
-    // for (let i = 0; i < field.balls.length; i++) {
-    //     let ball = field.balls[i]; 
-    //     ball.display(); 
-    //     ball.move(); 
-    // }
+    for (let i = 0; i < field.balls.length; i++) {
+        let ball = field.balls[i]; 
+        ball.display(); 
+        ball.move(); 
+    }
 
     // Check for new predictions HANDPOSE 
     handleResults();
@@ -116,6 +116,7 @@ function handleResults() {
     if (predictions.length > 0) {
         const annotations = predictions[0].annotations; 
         handShown(annotations); 
+        // setTimeout(handleResults, 1000); 
     }
 }
 
@@ -126,25 +127,21 @@ function handShown(annotations) {
     let ringTipY = annotations.ringFinger[3][1]; 
     let pinkyTipY = annotations.pinky[3][1];  
 
-    if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
-        console.log("open hand");
-    }
-    else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
-        console.log("thumb");
-    }
-    else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
-        console.log("index");
-    }
-    else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
-        console.log("pinky");
-    }
-}
 
-function handleBalls() {
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i];  
-        // ball.update(); 
-        // ball.grow(); 
-        ball.center(); 
+        if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
+            console.log("open hand");
+            ball.update(); 
+        }
+        else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
+            console.log("thumb");
+        }
+        else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
+            console.log("index");
+        }
+        else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
+            console.log("pinky");
+        }
     }
 }
