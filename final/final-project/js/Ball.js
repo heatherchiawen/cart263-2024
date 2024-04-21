@@ -37,7 +37,6 @@ class Ball {
 
     center() {
         this.pos.lerp(createVector(width/2, height/2), 0.05); 
-        // ADD SOME MOVEMENT WITH OLD GROW AND SHRINK CODE 
     }
 
     square() { 

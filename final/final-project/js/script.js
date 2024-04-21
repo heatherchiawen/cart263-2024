@@ -18,18 +18,17 @@ let predictions = [];
 let modelName = `Handpose`; 
 
 // Global variables for sounds 
-let fft; 
 let synth; 
 let pitchValue = 0; 
 
+// Ball class 
 let field = {
     balls: [], 
     numBalls: 20
 }; 
 
 // Initial loading state 
-// let state = `loading`; 
-
+let state = `loading`; 
 
 function preload() {
 
@@ -41,25 +40,25 @@ function preload() {
 */
 function setup() {
     createCanvas(640, 480); 
-    // userStartAudio(); // Starts audio in the program 
+    userStartAudio(); // Starts audio in the program 
 
     // Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
     // User video 
-    // video = createCapture(VIDEO); 
-    // video.hide(); 
+    video = createCapture(VIDEO); 
+    video.hide(); 
 
-    // // Ml5 setup 
-    // handpose = ml5.handpose(video, {
-    //     flipHorizontal: true 
-    // }, function() {
-    //     console.log(`Model loaded.`); 
-    //     state = `simulation`; 
-    // }); 
-    // // Listens to presdictions 
-    // handpose.on(`predict`, function(results) {
-    //     console.log(results); 
-    //     predictions = results;  
-    // });
+    // Ml5 setup 
+    handpose = ml5.handpose(video, {
+        flipHorizontal: true 
+    }, function() {
+        console.log(`Model loaded.`); 
+        state = `simulation`; 
+    }); 
+    // Listens to presdictions 
+    handpose.on(`predict`, function(results) {
+        console.log(results); 
+        predictions = results;  
+    });
 
     // Set up Balls 
     for (let i = 0; i < field.numBalls; i++) {
@@ -69,19 +68,25 @@ function setup() {
         let ball = new Ball(x, y, size); 
         field.balls.push(ball); 
     }
+
+    // Set up sounds 
+    synth = new p5.Oscillator(); 
+    synth.setType(`triangle`); 
+    synth.amp(0); 
+    synth.start();  
 }
 
 /**
  * Description of draw()
 */
 function draw() {
-    // if (state === `loading`) {
-    //     loading(); 
-    // }
-    // else if (state === `simulation`) {
-    //     simulation(); 
-    // }
-    simulation();
+    if (state === `loading`) {
+        loading(); 
+    }
+    else if (state === `simulation`) {
+        simulation(); 
+    }
+    // simulation();
 }
 
 function loading() {
@@ -98,33 +103,17 @@ function loading() {
 
 function simulation() {
     background(0); 
-    // User webcam display HANDPOSE 
-    // const flippedVideo = ml5.flipImage(video);
-    // image(flippedVideo, 0, 0, width, height); 
+    // User webcam display 
+    const flippedVideo = ml5.flipImage(video);
+    image(flippedVideo, 0, 0, width, height); 
 
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i]; 
         ball.display(); 
         ball.move(); 
-        if (mouseIsPressed === true) {
-            // ball.center(); // For Index 
-            // ball.orbiting(); // FOR HAND 
-            // ball.square(); // For thumb
-
-            let scopeX = i * width/20 
-            let scopeYOne = (20 - i) * height/20;
-            let scopeYTwo = i * height/20; 
-            
-            if (i % 2 === 0) {
-                ball.pos.lerp(createVector(scopeX, scopeYOne), 0.05); 
-            }
-            else {
-                ball.pos.lerp(createVector(scopeX, scopeYTwo), 0.05); 
-            }
-        }
     }
-    // Check for new predictions HANDPOSE 
-    // handleResults();
+    // Check for new predictions 
+    handleResults();
 }
 
 function handleResults() {
@@ -132,7 +121,12 @@ function handleResults() {
         const annotations = predictions[0].annotations; 
         handShown(annotations); 
         // setTimeout(handleResults, 1000); 
+        // synth.freq(60, 0.7); 
+        // synth.amp(0, 0.1, 0.7); 
     }
+    // else {
+    //     synth.amp(0, 0.1, 0.7); 
+    // }
 }
 
 function handShown(annotations) {
@@ -146,15 +140,31 @@ function handShown(annotations) {
         let ball = field.balls[i];  
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
+            ball.orbiting();
         }
         else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
             console.log("thumb");
+            ball.square(); 
         }
         else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
             console.log("index");
+            ball.center(); 
         }
         else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
             console.log("pinky");
-        }
+
+            // X formation 
+            let scopeX = i * width/20 
+            let scopeYOne = (20 - i) * height/20;
+            let scopeYTwo = i * height/20; 
+
+            if (i % 2 === 0) {
+                ball.pos.lerp(createVector(scopeX, scopeYOne), 0.05); 
+            }
+            else {
+                ball.pos.lerp(createVector(scopeX, scopeYTwo), 0.05); 
+            }
+            synth.freq(freqToMidi()); 
+        } 
     }
 }
