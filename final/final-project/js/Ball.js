@@ -9,6 +9,7 @@ class Ball {
             b: random(0, 255)
         }; 
 
+        // For orbit
         this.angle = 0; 
         this.angleOffset = random(1, 5);  
         this.orbit = 0; 
@@ -18,7 +19,8 @@ class Ball {
         this.cornerTwo; // Top right 
         this.cornerThree; // Bottom left 
         this.cornerFour; // Bottom right 
-
+        
+        // Setup for oscillator 
         this.synth = new p5.Oscillator(); 
         this.synth.amp(0); 
         this.synth.start(); 
@@ -27,12 +29,15 @@ class Ball {
 
     move() {
         this.pos.add(this.vel); 
+        // Check for if off screen 
         if (this.pos < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height) {
             this.vel.mult(-1);
         }
     }
 
     orbiting() {
+        // Open hand gesture 
+        // Code for orbit was sampled from Faith Yu,  “Lecture 6 - orbit,” p5.js Sketches
         this.angle += 0.01; 
         this.orbit = createVector(width/2, height/2); 
         let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
@@ -41,16 +46,19 @@ class Ball {
     }
 
     square() { 
+        // Thumb gesture 
         this.cornerOne = createVector(width/4, height/4); 
         this.cornerTwo = createVector(width/4 * 3, height/4); 
         this.cornerThree = createVector(width/4, height/4 * 3); 
         this.cornerFour = createVector(width/4 * 3, height/4 * 3); 
 
+        // Checks between corner points and position of ellipses 
         let dOne = p5.Vector.dist(this.cornerOne, this.pos); 
         let dTwo = p5.Vector.dist(this.cornerTwo, this.pos); 
         let dThree = p5.Vector.dist(this.cornerThree, this.pos); 
         let dFour = p5.Vector.dist(this.cornerFour, this.pos); 
 
+        // If they are close to any of the points, they will move into postion 
         if (dOne < width/4 && dOne < height/4) {
             this.pos.lerp(this.cornerOne, 0.05); 
         }
@@ -66,6 +74,7 @@ class Ball {
     }
 
     center() {
+        // Index gesture 
         this.pos.lerp(createVector(width/2, height/2), 0.05); 
     }
 
