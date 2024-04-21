@@ -80,6 +80,7 @@ function draw() {
     else if (state === `simulation`) {
         simulation(); 
     }
+    // simulation();
 }
 
 function loading() {
@@ -95,9 +96,10 @@ function loading() {
 }
 
 function simulation() {
+    background(0); 
     // User webcam display HANDPOSE 
-    const flippedVideo = ml5.flipImage(video);
-    image(flippedVideo, 0, 0, width, height); 
+    // const flippedVideo = ml5.flipImage(video);
+    // image(flippedVideo, 0, 0, width, height); 
 
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i]; 
@@ -129,23 +131,23 @@ function handShown(annotations) {
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
             // ball.jitterOn === true; 
-            ball.jitter(); 
+            // ball.jitter(); 
         }
         else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
             console.log("thumb");
             // ball.growOn === true; 
-            ball.grow(); 
+            // ball.grow(); 
         }
         else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
             console.log("index");
             // ball.orbitOn === true; 
-            ball.grow(); 
+            // ball.grow(); 
         }
         else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
             console.log("pinky");
             // ball.shrinkOn === true; 
-            ball.shrink(); 
+            // ball.shrink(); 
         }
-        // ball.update(); 
+        ball.update(); 
     }
 }
