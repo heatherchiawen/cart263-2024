@@ -27,11 +27,6 @@ let field = {
     numBalls: 20
 }; 
 
-let angle = 0; 
-let angleOffset = 0; 
-let orbit = 0; 
-let orbitRadius = 300; 
-
 // Initial loading state 
 // let state = `loading`; 
 
@@ -70,12 +65,10 @@ function setup() {
     for (let i = 0; i < field.numBalls; i++) {
         let x = random(0, width); 
         let y = random(0, height); 
-        let size = i * 10; 
+        let size = i * random(1, 10); 
         let ball = new Ball(x, y, size); 
         field.balls.push(ball); 
     }
-    orbit = createVector(width/2, height/2);
-    angleOffset = random(1, 5); 
 }
 
 /**
@@ -114,11 +107,20 @@ function simulation() {
         ball.display(); 
         ball.move(); 
         if (mouseIsPressed === true) {
-            // ball.center(); 
-            // ball.update(); 
-            // ball.orbiting(); 
-            // ball.square(); 
-            ball.diamond(); 
+            // ball.center(); // For Index 
+            // ball.orbiting(); // FOR HAND 
+            // ball.square(); // For thumb
+
+            let scopeX = i * width/20 
+            let scopeYOne = (20 - i) * height/20;
+            let scopeYTwo = i * height/20; 
+            
+            if (i % 2 === 0) {
+                ball.pos.lerp(createVector(scopeX, scopeYOne), 0.05); 
+            }
+            else {
+                ball.pos.lerp(createVector(scopeX, scopeYTwo), 0.05); 
+            }
         }
     }
     // Check for new predictions HANDPOSE 
@@ -144,24 +146,15 @@ function handShown(annotations) {
         let ball = field.balls[i];  
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
-            // ball.jitterOn === true; 
-            // ball.jitter(); 
         }
         else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
             console.log("thumb");
-            // ball.growOn === true; 
-            // ball.grow(); 
         }
         else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
             console.log("index");
-            // ball.orbitOn === true; 
-            // ball.grow(); 
         }
         else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
             console.log("pinky");
-            // ball.shrinkOn === true; 
-            // ball.shrink(); 
         }
-        // ball.update(); 
     }
 }

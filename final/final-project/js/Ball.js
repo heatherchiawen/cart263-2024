@@ -18,11 +18,6 @@ class Ball {
         this.cornerTwo; // Top right 
         this.cornerThree; // Bottom left 
         this.cornerFour; // Bottom right 
-
-        this.top; 
-        this.bottom; 
-        this.leftSide; 
-        this.rightSide; 
     }
 
     move() {
@@ -30,10 +25,6 @@ class Ball {
         if (this.pos < 0 || this.pos.x > width || this.pos.y < 0 || this.pos.y > height) {
             this.vel.mult(-1);
         }
-    }
-
-    update() {
-
     }
 
     orbiting() {
@@ -46,6 +37,7 @@ class Ball {
 
     center() {
         this.pos.lerp(createVector(width/2, height/2), 0.05); 
+        // ADD SOME MOVEMENT WITH OLD GROW AND SHRINK CODE 
     }
 
     square() { 
@@ -70,31 +62,6 @@ class Ball {
         }
         if (dFour < width/4 && dFour < height/4) {
             this.pos.lerp(this.cornerFour, 0.05);
-        }
-    }
-
-    diamond() {
-        this.top = createVector(width/2, height/4); 
-        this.bottom = createVector(width/2, height/4 * 3); 
-        this.leftSide = createVector(width/4, height/2); 
-        this.rightSide = createVector(width/4 * 3, height/2); 
-
-        let dOne = p5.Vector.dist(this.top, this.pos); 
-        let dTwo = p5.Vector.dist(this.bottom, this.pos); 
-        let dThree = p5.Vector.dist(this.leftSide, this.pos); 
-        let dFour = p5.Vector.dist(this.rightSide, this.pos); 
-
-        if (dOne < width/4 && dOne < height/4) {
-            this.pos.lerp(this.top, 0.05); 
-        }
-        if (dTwo < width/4 && dTwo < height/4) {
-            this.pos.lerp(this.bottom, 0.05);
-        }
-        if (dThree < width/4 && dThree < height/4) {
-            this.pos.lerp(this.leftSide, 0.05); 
-        }
-        if (dFour < width/4 && dFour < height/4) {
-            this.pos.lerp(this.rightSide, 0.05);
         }
     }
 
