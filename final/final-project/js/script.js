@@ -117,18 +117,8 @@ function simulation() {
             // ball.center(); 
             // ball.update(); 
             // ball.orbiting(); 
-            ball.square(); 
-
-
-            // let scopeX = i * width/20 
-            // let scopeY = 0 + i * height/20; 
-            // ball.pos.lerp(createVector(scopeX, scopeY), 0.05); 
-
-            // let jitter = 0.1; 
-            // let r = random(0, 1); 
-            // if (r < jitter) {
-            //     ball.pos.add(random(-10, 10)); 
-            // }
+            // ball.square(); 
+            ball.diamond(); 
         }
     }
     // Check for new predictions HANDPOSE 
