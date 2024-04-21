@@ -15,6 +15,7 @@ class Ball {
         this.orbit = 0; 
         this.orbitRadius = 200; 
 
+        // For square 
         this.cornerOne; // Top left 
         this.cornerTwo; // Top right 
         this.cornerThree; // Bottom left 
