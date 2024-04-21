@@ -114,11 +114,29 @@ function simulation() {
 
 function handleResults() {
     if (predictions.length > 0) {
-        // const annotations = predictions[0].annotations; 
-        // let thumb = annotations.thumb[3]; 
-        
-        
-        // handleBalls(); 
+        const annotations = predictions[0].annotations; 
+        handShown(annotations); 
+    }
+}
+
+function handShown(annotations) {
+    let thumbTipY = annotations.thumb[3][1]; 
+    let indexTipY = annotations.indexFinger[3][1];
+    let middleTipY = annotations.middleFinger[3][1]; 
+    let ringTipY = annotations.ringFinger[3][1]; 
+    let pinkyTipY = annotations.pinky[3][1];  
+
+    if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
+        console.log("open hand");
+    }
+    else if (thumbTipY < indexTipY && thumbTipY < middleTipY && thumbTipY < ringTipY && thumbTipY < pinkyTipY) {
+        console.log("thumb");
+    }
+    else if (indexTipY < thumbTipY && indexTipY < middleTipY && indexTipY < ringTipY && indexTipY < pinkyTipY) {
+        console.log("index");
+    }
+    else if (pinkyTipY < thumbTipY && pinkyTipY < indexTipY && pinkyTipY < middleTipY && pinkyTipY < ringTipY) {
+        console.log("pinky");
     }
 }
 
