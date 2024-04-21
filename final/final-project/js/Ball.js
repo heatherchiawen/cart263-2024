@@ -1,7 +1,7 @@
 class Ball {
-    constructor(x, y) { 
+    constructor(x, y, size) { 
         this.pos = createVector(x, y); 
-        this.size = 300; 
+        this.size = size
         this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5)); 
         this.color = { 
             r: random(0, 255), 
@@ -9,15 +9,16 @@ class Ball {
             b: random(0, 255)
         }; 
 
-        this.center = 0; 
-        this.pull = 0; 
-        
-        this.jitter = 0.1; 
-
         this.angle = 0; 
         this.angleOffset = random(1, 5);  
         this.orbit = 0; 
         this.orbitRadius = 200; 
+
+        this.cornerOne = 0; // Top left 
+        this.cornerTwo = 0; // Top right 
+        this.cornerThree = 0; // Bottom left 
+        this.cornerFour = 0; // Bottom right 
+        this.reachedCorner = false; 
     }
 
     move() {
@@ -28,33 +29,44 @@ class Ball {
     }
 
     update() {
-        // this.orbit(); 
+
+    }
+
+    orbiting() {
         this.angle += 0.01; 
         this.orbit = createVector(width/2, height/2); 
         let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
         let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
-        this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.05); 
-    }
+        this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.05);
 
-    orbit() {
-        this.angle += 0.01; 
-        this.orbit = createVector(mouseX, mouseY); 
-        let orbitPosX = this.orbit.x + this.orbitRadius * cos(this.angle * this.angleOffset); 
-        let orbitPosY = this.orbit.y + this.orbitRadius * sin(this.angle * this.angleOffset);
-        this.pos.lerp(createVector(orbitPosX, orbitPosY), 0.05); 
     }
 
     center() {
-        this.center = createVector(width/2, height/2); 
-        this.pull = p5.Vector.sub(this.center, this.pos); 
-        this.pull.setMag(0.05); 
-        this.vel.add(this.pull); 
+        this.pos.lerp(createVector(width/2, height/2), 0.05); 
     }
-    
-    jitter() {
-        let r = random(0, 1); 
-        if (r < this.jitter) {
-            this.pos.add(random(-100, 100)); 
+
+    square() { 
+        this.cornerOne = createVector(width/4, height/4); 
+        this.cornerTwo = createVector(width/4 * 3, height/4); 
+        this.cornerThree = createVector(width/4, height/4 * 3); 
+        this.cornerFour = createVector(width/4 * 3, height/4 * 3); 
+
+        let dOne = p5.Vector.dist(this.cornerOne, this.pos); 
+        let dTwo = p5.Vector.dist(this.cornerTwo, this.pos); 
+        let dThree = p5.Vector.dist(this.cornerThree, this.pos); 
+        let dFour = p5.Vector.dist(this.cornerFour, this.pos); 
+
+        if (dOne < width/4 && dOne < height/4) {
+            this.pos.lerp(this.cornerOne, 0.05); 
+        }
+        if (dTwo < width/4 && dTwo < height/4) {
+            this.pos.lerp(this.cornerTwo, 0.05);
+        }
+        if (dThree < width/4 && dThree < height/4) {
+            this.pos.lerp(this.cornerThree, 0.05); 
+        }
+        if (dFour < width/4 && dFour < height/4) {
+            this.pos.lerp(this.cornerFour, 0.05);
         }
     }
 

@@ -27,8 +27,13 @@ let field = {
     numBalls: 20
 }; 
 
+let angle = 0; 
+let angleOffset = 0; 
+let orbit = 0; 
+let orbitRadius = 300; 
+
 // Initial loading state 
-let state = `loading`; 
+// let state = `loading`; 
 
 
 function preload() {
@@ -45,42 +50,45 @@ function setup() {
 
     // Setup code for ml5 handPose was sampled from Pippin Barr's bubble-popper activity 
     // User video 
-    video = createCapture(VIDEO); 
-    video.hide(); 
+    // video = createCapture(VIDEO); 
+    // video.hide(); 
 
-    // Ml5 setup 
-    handpose = ml5.handpose(video, {
-        flipHorizontal: true 
-    }, function() {
-        console.log(`Model loaded.`); 
-        state = `simulation`; 
-    }); 
-    // Listens to presdictions 
-    handpose.on(`predict`, function(results) {
-        console.log(results); 
-        predictions = results;  
-    });
+    // // Ml5 setup 
+    // handpose = ml5.handpose(video, {
+    //     flipHorizontal: true 
+    // }, function() {
+    //     console.log(`Model loaded.`); 
+    //     state = `simulation`; 
+    // }); 
+    // // Listens to presdictions 
+    // handpose.on(`predict`, function(results) {
+    //     console.log(results); 
+    //     predictions = results;  
+    // });
 
     // Set up Balls 
     for (let i = 0; i < field.numBalls; i++) {
         let x = random(0, width); 
         let y = random(0, height); 
-        let ball = new Ball(x, y); 
+        let size = i * 10; 
+        let ball = new Ball(x, y, size); 
         field.balls.push(ball); 
     }
+    orbit = createVector(width/2, height/2);
+    angleOffset = random(1, 5); 
 }
 
 /**
  * Description of draw()
 */
 function draw() {
-    if (state === `loading`) {
-        loading(); 
-    }
-    else if (state === `simulation`) {
-        simulation(); 
-    }
-    // simulation();
+    // if (state === `loading`) {
+    //     loading(); 
+    // }
+    // else if (state === `simulation`) {
+    //     simulation(); 
+    // }
+    simulation();
 }
 
 function loading() {
@@ -105,10 +113,26 @@ function simulation() {
         let ball = field.balls[i]; 
         ball.display(); 
         ball.move(); 
-    }
+        if (mouseIsPressed === true) {
+            // ball.center(); 
+            // ball.update(); 
+            // ball.orbiting(); 
+            ball.square(); 
 
+
+            // let scopeX = i * width/20 
+            // let scopeY = 0 + i * height/20; 
+            // ball.pos.lerp(createVector(scopeX, scopeY), 0.05); 
+
+            // let jitter = 0.1; 
+            // let r = random(0, 1); 
+            // if (r < jitter) {
+            //     ball.pos.add(random(-10, 10)); 
+            // }
+        }
+    }
     // Check for new predictions HANDPOSE 
-    handleResults();
+    // handleResults();
 }
 
 function handleResults() {
@@ -148,6 +172,6 @@ function handShown(annotations) {
             // ball.shrinkOn === true; 
             // ball.shrink(); 
         }
-        ball.update(); 
+        // ball.update(); 
     }
 }
