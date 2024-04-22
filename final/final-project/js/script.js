@@ -124,15 +124,12 @@ function simulation() {
 
 function handleResults() {
     // Prediction setup sampled from Pippin Barr's bubble-popper activity
-    for (let i = 0; i < field.balls.length; i++) {
-        let ball = field.balls[i]; 
-        if (predictions.length > 0) {
-            const annotations = predictions[0].annotations; 
-            handShown(annotations); 
-            ball.synth.amp(1, 0.1, 0.7); 
-        }
-        else {
-            ball.synth.amp(0);
+    if (predictions.length > 0) {
+        const annotations = predictions[0].annotations; 
+        handShown(annotations); 
+    } else {
+        for (let i = 0; i < field.balls.length; i++) {
+            field.balls[i].synth.amp(0); 
         }
     }
 }
@@ -147,6 +144,7 @@ function handShown(annotations) {
 
     for (let i = 0; i < field.balls.length; i++) {
         let ball = field.balls[i]; 
+        ball.synth.amp(1, 0.1, 0.7); 
         // If all fingers are above the thumb, ellipses orbit and prgram plays 60 Hz
         if (indexTipY < thumbTipY && middleTipY < thumbTipY && ringTipY < thumbTipY && pinkyTipY < thumbTipY) {
             console.log("open hand");
